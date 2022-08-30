@@ -169,6 +169,7 @@ if st.session_state['results'] == 1:
                         st.session_state['outliers_points'+string][time] = {}
                         st.session_state['outliers_points'+string][time]['baseline'] = baseline
                         st.session_state['outliers_points'+string][time]['prediction'] = prediction
+                        
                 
                 else:
                     del st.session_state['outliers_points'+string][time]
@@ -176,6 +177,7 @@ if st.session_state['results'] == 1:
                     st.session_state['selected_points'+string][time]['baseline'] = baseline
                     st.session_state['selected_points'+string][time]['prediction'] = prediction
                 
+                st.write('The point selected corresponds to time = ' + str(time))
                 st.session_state['iter'] += 1
                 st.experimental_rerun()
                     

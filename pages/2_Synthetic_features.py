@@ -51,9 +51,9 @@ if st.session_state['synthetic_features_created'] == 1:
     
     synth = SyntheticFeatures(st.session_state['x_df_synthetic'])
     
-    if 'YES' == st.selectbox('Do you want to create the squared root and the square of the features ?',
-                              options = ['NO','YES']):
-        sqrt_and_squared = True
+    # if 'YES' == st.selectbox('Do you want to create the squared root and the square of the features ?',
+    #                           options = ['NO','YES']):
+    #     sqrt_and_squared = True
         
         
     # if 'YES' == st.selectbox('Do you want to create the synthetic features corresponding to the products of the original features (this could take a few minutes) ?',
@@ -68,8 +68,8 @@ if st.session_state['synthetic_features_created'] == 1:
     st.session_state['inverse_features'] = st.multiselect('Which features do you want to compute the inverse of ?',
                                       options = [feature for feature in inv_columns])
     
-    st.session_state['strings_to_remove'] = st.multiselect('Do you want to remove the max, the min or the std of features ? Select those you want to remove',
-                                                           options = ['max', 'min', 'std'])    
+    st.session_state['strings_to_remove'] = st.multiselect('Do you want to remove the max, the min or the std of the features ? Select those you want to remove',
+                                                           options = ['max', 'min', 'std'])
     
     st.write('')
     st.write('')
@@ -79,8 +79,8 @@ if st.session_state['synthetic_features_created'] == 1:
     if st.button('COMPUTE'):
         
         with st.spinner('Creating the synthetic features and removing features containing 3 equal values.'):
-            if sqrt_and_squared:
-                synth.create_sqrt_and_squared()
+            # if sqrt_and_squared:
+            #     synth.create_sqrt_and_squared()
                 
             # if products:
             #     synth.create_products()
@@ -93,7 +93,7 @@ if st.session_state['synthetic_features_created'] == 1:
             
             for string in st.session_state['strings_to_remove']:
                 string = string + '_'
-                synth.remove_str(string)
+                synth.remove_str_beginning(string)
             
             st.session_state['x_df_synthetic'] = synth.x_df
             

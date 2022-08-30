@@ -78,10 +78,11 @@ class SyntheticFeatures:
         return self.x_df
     
     
-    def remove_str(self, string):
+    def remove_str_beginning(self, string):
         bad_columns = []
+        n = len(string)
         for column in self.x_df.columns:
-            if string in column:
+            if column[0:n] == string:
                 bad_columns.append(column)
         print(bad_columns)
         self.x_df = self.x_df.drop([feature for feature in bad_columns], axis = 1)
