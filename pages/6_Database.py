@@ -19,7 +19,7 @@ import xlrd
 from xlutils.copy import copy
 import os
 import csv
-
+from datetime import datetime
 # sys.path.append(r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP")
 
 
@@ -48,9 +48,10 @@ if st.session_state['database'] == 1:
         
         e = st.session_state['excel']
     
+    
         database = e.data
-        database['Start date'] = e.start
-        database['End date'] = e.end
+        database['Start date'] = e.start.strftime('%d/%m/%Y %H:%M')
+        database['End date'] = e.end.strftime('%d/%m/%Y %H:%M')
 
         database['Baseline'] = st.session_state['y_df_regression'].tolist()
         
@@ -73,7 +74,11 @@ if st.session_state['database'] == 1:
         database['coefficients']['slopes'] = st.session_state['results_dict'+str(sel_combi2)+str(sel_version)][sel_combi2]['slopes']
         database['equation'] = st.session_state['equation']
     
-        st.session_state['new_database'] = database
+        database['created at'] = datetime.now().strftime('%d/%m/%Y %H:%M')
+        db = {}
+        db[database['Project name']] = database
+        
+        st.session_state['new_database'] = db
         st.session_state['database'] = 2
         st.experimental_rerun()
     

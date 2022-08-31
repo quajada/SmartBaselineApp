@@ -9,7 +9,6 @@ import numpy as np
 import pandas as pd
 import psychrolib
 
-
 class Psychro:
     
     psychrolib.SetUnitSystem(psychrolib.SI)
@@ -40,12 +39,27 @@ class Psychro:
         self.rh[self.rh < 0 ] = 0
         self.p = p.multiply(100).to_numpy()
         
+        
     def get_data(self):
-        psych_arr = psychrolib.CalcPsychrometricsFromRelHum(self.temp, 
-                                                            self.rh,
-                                                            self.p)
+        
+        test = psychrolib.CalcPsychrometricsFromRelHum(self.temp[0], 
+                                                       self.rh[0],
+                                                       self.p[0])
+        
+        nb_psychro_variables = len(test)
+        nb_points = len(self.temp)
+        
+        psych_arr = tuple(np.zeros(nb_points) for _ in range (nb_psychro_variables))
+        
+        for i in range(nb_points):
+            new_psych_arr = psychrolib.CalcPsychrometricsFromRelHum(self.temp[i], 
+                                                                    self.rh[i],
+                                                                    self.p[i])
+            for k in range (nb_psychro_variables):
+                psych_arr[k][i] = new_psych_arr[k]
+            
         psych_arr = np.array(psych_arr)
-
+        
         return pd.DataFrame(data = psych_arr.T, 
                             index = self.index, 
                             columns = self.cols)

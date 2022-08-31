@@ -39,10 +39,10 @@ if __name__ == "__main__":
     synth.create_inverse([])
     # synth.create_products()
     synth.create_sqrt_and_squared()
-    synth.remove_str('min')
+    synth.remove_str_beginning('min')
     x_df = synth.x_df
     
-    """
+    
     print(x_df.columns)
     print(len(x_df.columns))
     
@@ -100,4 +100,4 @@ if __name__ == "__main__":
     # final.are_combinations_IPMVP_consistently_compliant()
     final.are_combinations_IPMVP_compliant()
     results_df = final.get_df_results()  
-    results_dict = final.results"""
+    results_dict = final.results

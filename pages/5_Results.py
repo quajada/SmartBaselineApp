@@ -138,8 +138,11 @@ if st.session_state['results'] == 1:
 
         st.write("You can optimize this model by removing outliers. The optimized model will then appear on the second table below. Click on a point to remove/add it.")
         
-        if st.session_state['selected_pt'+str(sel_combi)+str(itera)] != []:
-            
+        if st.session_state['selected_pt'+str(sel_combi)+str(itera)] == []:
+            if 'time'+string in st.session_state:
+                st.write('The point selected corresponds to time = '+str(st.session_state['time'+string]))
+        
+        else:
             baseline = st.session_state['selected_pt'+str(sel_combi)+str(itera)][0]['x']
             prediction = st.session_state['selected_pt'+str(sel_combi)+str(itera)][0]['y']
             
@@ -177,7 +180,7 @@ if st.session_state['results'] == 1:
                     st.session_state['selected_points'+string][time]['baseline'] = baseline
                     st.session_state['selected_points'+string][time]['prediction'] = prediction
                 
-                st.write('The point selected corresponds to time = ' + str(time))
+                st.session_state['time'+string] = time
                 st.session_state['iter'] += 1
                 st.experimental_rerun()
                     
@@ -229,40 +232,58 @@ if st.session_state['results'] == 1:
                             new_dict[column] = round(new_dict[column], 3)
                         
                         st.session_state['results_df_outliers'] = st.session_state['results_df_outliers'].append(new_dict, ignore_index = True)
+                    
+                    is_already = False
+                    
+                    if 'outliers_points'+string not in st.session_state:
+                        is_already = True
+                        
+                    elif st.session_state['outliers_points'+string] == {}:
+                        is_already = True
+                    
+                    else:
+                        for i in range (1, st.session_state['iteration'+str(sel_combi)]):
+                            if st.session_state['outliers_points'+str(sel_combi)+str(i)] == st.session_state['outliers_points'+string]:
+                                is_already = True
                             
-                    times = [time for time in st.session_state['outliers_points'+string]]
+                    # st.session_state['is_already'+str(sel_combi)] = is_already
+                    if is_already:
+                        col1.write('**The model you chose is already in the final selection**')
                     
-                    clean = CleanRows(st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)])
-                    clean.remove_rows(times)
-                    st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)] = clean.x_df, clean.y_df
-                    
-                    final2 = Engine(st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)], [sel_combi], max_variables = st.session_state['max_features'], nb_folds = st.session_state['nb_folds'], test_size = st.session_state['test_size'])
-                    final2.compute_cross_validation()
-                    final2.are_combinations_IPMVP_compliant()
-                    final2.get_df_results()
-                    st.session_state['results_df'+str(sel_combi)+str(itera)] = final2.results_df
-                    st.session_state['results_dict'+str(sel_combi)+str(itera)] = final2.results
-                    
-                    new_dict = {}
-                    new_dict['combinations'] = sel_combi
-                    for column in st.session_state['results_df_outliers']:
-                        if column not in ['combinations','version', 'nb_data_points', 'nb_outliers_removed']:
-                            new_dict[column] = st.session_state['results_df'+str(sel_combi)+str(itera)][column]
-                   
-                    new_dict['nb_outliers_removed'] = len(st.session_state['outliers_points'+string])
-                    new_dict['version'] = itera
-                    new_dict['nb_data_points'] = len(st.session_state['selected_points'+string])
-                    
-                    st.session_state['results_df_outliers'] = st.session_state['results_df_outliers'].append(new_dict, ignore_index = True)
-        
-                    st.session_state['iteration' + str(sel_combi)] += 1
-                    st.session_state['selected_pt'+str(sel_combi)+str(itera)] = {}
-                    st.experimental_rerun()                    
+                    else:
+                        times = [time for time in st.session_state['outliers_points'+string]]
+                        
+                        clean = CleanRows(st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)])
+                        clean.remove_rows(times)
+                        st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)] = clean.x_df, clean.y_df
+                        
+                        final2 = Engine(st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)], [sel_combi], max_variables = st.session_state['max_features'], nb_folds = st.session_state['nb_folds'], test_size = st.session_state['test_size'])
+                        final2.compute_cross_validation()
+                        final2.are_combinations_IPMVP_compliant()
+                        final2.get_df_results()
+                        st.session_state['results_df'+str(sel_combi)+str(itera)] = final2.results_df
+                        st.session_state['results_dict'+str(sel_combi)+str(itera)] = final2.results
+                        
+                        new_dict = {}
+                        new_dict['combinations'] = sel_combi
+                        for column in st.session_state['results_df_outliers']:
+                            if column not in ['combinations','version', 'nb_data_points', 'nb_outliers_removed']:
+                                new_dict[column] = st.session_state['results_df'+str(sel_combi)+str(itera)][column]
+                       
+                        new_dict['nb_outliers_removed'] = len(st.session_state['outliers_points'+string])
+                        new_dict['version'] = itera
+                        new_dict['nb_data_points'] = len(st.session_state['selected_points'+string])
+                        
+                        st.session_state['results_df_outliers'] = st.session_state['results_df_outliers'].append(new_dict, ignore_index = True)
             
+                        st.session_state['iteration' + str(sel_combi)] += 1
+                        st.session_state['selected_pt'+str(sel_combi)+str(itera)] = {}
+                        st.experimental_rerun()                    
+                
     st.write('')
     st.write('')
     
-    st.write("The final and optimized model selection is shown below. A model can have multiple versions corresponding to the outliers removed. For version 0 we kept the entire dataset."+
+    st.write("The final and optimized model selection is shown below. A model can have multiple versions corresponding to the outliers removed. For version 0 we kept the entire dataset (this version is automatically created)."+
              " Select an optimized model to get more information.")
     
 
@@ -312,7 +333,6 @@ if st.session_state['results'] == 1:
 
         
         with col_3:
-
             
             selected_baseline = [st.session_state['selected_points'+string][time]['baseline'] for time in st.session_state['selected_points'+string]]
             selected_prediction = [st.session_state['selected_points'+string][time]['prediction'] for time in st.session_state['selected_points'+string]]
@@ -328,7 +348,7 @@ if st.session_state['results'] == 1:
             plot.add_scatter(x = st.session_state['y_df'+string], y = st.session_state['y_df'+string], mode='lines', name = 'y = x')
             plot.update_layout(title = {'text' : 'Predictions as a function of the baseline','x':0.47, 'xanchor': 'center', 'yanchor': 'top'},
                                xaxis_title ='Baseline', yaxis_title='Predictions')
-            plotly_events(plot, click_event=True, key = -st.session_state['iter']-1)
+            plotly_events(plot, click_event=False, key = -st.session_state['iter']-1)
             
             
             if st.button('THIS IS MY FINAL MODEL', key = 10000):
@@ -380,7 +400,7 @@ if st.session_state['results'] == 2:
         plot.add_scatter(x = st.session_state['y_df_results'], y = st.session_state['y_df_results'], mode='lines', name = 'y = x')
         plot.update_layout(title = {'text' : 'Predictions as a function of the baseline','x':0.47, 'xanchor': 'center', 'yanchor': 'top'},
                            xaxis_title ='Baseline', yaxis_title='Predictions')
-        plotly_events(plot, click_event=True, key = -st.session_state['iter'])
+        plotly_events(plot, click_event=False, key = -st.session_state['iter'])
         
         st.write('')
         st.write('')
@@ -391,7 +411,6 @@ if st.session_state['results'] == 2:
             st.session_state['results'] = 1
             st.session_state['database'] = 0
             st.experimental_rerun()
-            
 
         
     with col_4:
