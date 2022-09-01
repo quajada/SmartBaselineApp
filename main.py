@@ -25,7 +25,7 @@ if __name__ == "__main__":
     e = ReadExcel(path)
     x_df, y_df_dates = e.preprocess_data(path)
     y_df = y_df_dates['Normalized baseline'].astype(np.float64)
-    
+    """
     clean = CleanRows(x_df, y_df)
     bad_rows = clean.get_outliers_quantile(quantile = 0.01)
     clean.remove_rows(bad_rows)
@@ -101,3 +101,4 @@ if __name__ == "__main__":
     final.are_combinations_IPMVP_compliant()
     results_df = final.get_df_results()  
     results_dict = final.results
+    """

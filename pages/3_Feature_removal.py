@@ -33,8 +33,6 @@ from PIL import Image
 
 initialization(st)
 
-
-
 st.header('Feature removal')
 
 st.subheader('Automatic')    

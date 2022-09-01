@@ -8,8 +8,6 @@ Created on Tue Jul 19 11:21:15 2022
 import pandas as pd
 import numpy as np
 
-
-
 class CDD:
     
     def __init__(self, base_temp):
@@ -64,6 +62,27 @@ class SyntheticFeatures:
         if type(columns) == str:
             self.x_df['inv_'+columns] = self.x_df[columns]**(-1)
         return self.x_df
+    
+    
+    def create_sqrt(self, columns):
+        if type(columns) == list:
+            for column in columns:
+                self.x_df['sqrt_'+column] = self.x_df[column]**(1/2)
+        
+        if type(columns) == str:
+            self.x_df['sqrt_'+columns] = self.x_df[columns]**(1/2)
+        return self.x_df
+    
+    
+    def create_squared(self, columns):
+        if type(columns) == list:
+            for column in columns:
+                self.x_df['squared_'+column] = self.x_df[column]**(2)
+        
+        if type(columns) == str:
+            self.x_df['squared_'+columns] = self.x_df[columns]**(2)
+        return self.x_df
+    
 
     def create_products(self):
         columns = self.x_df.columns

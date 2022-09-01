@@ -21,7 +21,6 @@ class ReadExcel:
         # Open Workbook
         self.wb = openpyxl.load_workbook(filename = file_path, data_only = True)
         sheet = self.wb["Project"]
-
         
         # Extract params from excel file
         self.data = {
@@ -99,8 +98,7 @@ class ReadExcel:
         baseline = self.get_baseline()
         self.start = baseline['From (incl)'][0]
         self.end = baseline['To (excl)'][len(baseline)-1]
-        print(self.start)
-        print(self.end)
+        
         df_weather = w.get_data(self.start, self.end)
         
         # Psychrometric data

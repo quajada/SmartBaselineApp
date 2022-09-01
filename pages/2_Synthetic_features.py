@@ -21,7 +21,7 @@ import plotly_express as px
 from features.synthetic_features import SyntheticFeatures, CDD, HDD
 from cleandata.cleandata import Aggregator, CleanColumns, CleanRows
 from engines.engine import Engine
-from helpful_funcs.excel_funcs import ReadExcel
+from helpful_funcs.excel_funcs import *
 from combinations.combinations import Combinations
 from bokeh.plotting import figure
 from bokeh.models import ColumnDataSource, CustomJS
@@ -60,6 +60,19 @@ if st.session_state['synthetic_features_created'] == 1:
     #                           options = ['NO', 'YES']):
     #     products = True
     
+    sqrt_columns = []
+    for column in st.session_state['x_df_synthetic'].columns:
+        if st.session_state['x_df_synthetic'][st.session_state['x_df_synthetic'][column] < 0].empty:
+            sqrt_columns.append(column)
+            
+    st.session_state['sqrt_features'] = st.multiselect('Which features do you want to compute the squared root of ?',
+                                      options = [feature for feature in sqrt_columns])
+    
+    
+    st.session_state['squared_features'] = st.multiselect('Which features do you want to compute the square of ?',
+                                      options = [feature for feature in st.session_state['x_df_synthetic'].columns])
+    
+    
     inv_columns = []
     for column in st.session_state['x_df_synthetic'].columns:
         if st.session_state['x_df_synthetic'][st.session_state['x_df_synthetic'][column] == 0].empty:
@@ -84,6 +97,12 @@ if st.session_state['synthetic_features_created'] == 1:
                 
             # if products:
             #     synth.create_products()
+            
+            if len(st.session_state['sqrt_features']) > 0:
+                synth.create_sqrt(st.session_state['sqrt_features'])
+                
+            if len(st.session_state['squared_features']) > 0:
+                synth.create_squared(st.session_state['squared_features'])
                     
             if len(st.session_state['inverse_features']) > 0:
                 synth.create_inverse(st.session_state['inverse_features'])

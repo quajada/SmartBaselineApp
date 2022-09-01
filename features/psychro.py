@@ -57,7 +57,7 @@ class Psychro:
                                                                     self.p[i])
             for k in range (nb_psychro_variables):
                 psych_arr[k][i] = new_psych_arr[k]
-            
+        
         psych_arr = np.array(psych_arr)
         
         return pd.DataFrame(data = psych_arr.T, 
