@@ -105,7 +105,12 @@ class ReadExcel:
         df_psych = Psychro(df_weather['temp'],
                            df_weather['rhum'],
                            df_weather['pres'])
+        print('AAAAAAAA')
+        
         df_psych = df_psych.get_data()
+        
+        print('BBBBBBBBBB')
+        
         
         # Merge weather features
         weather_features = df_weather.merge(df_psych, left_index=True, right_index=True)

@@ -8,6 +8,7 @@ Created on Wed Jul 20 16:20:58 2022
 import numpy as np
 import pandas as pd
 import psychrolib
+import matplotlib.pyplot as plt
 
 class Psychro:
     
@@ -37,7 +38,10 @@ class Psychro:
         self.rh = rh.divide(100).to_numpy()
         self.rh[self.rh > 1] = 1
         self.rh[self.rh < 0 ] = 0
-        self.p = p.multiply(100).to_numpy()
+        self.p = p.multiply(100)
+        self.p[self.p < 98000] = np.nan
+        self.p = self.p.interpolate()
+        self.p = self.p.to_numpy()
         
         
     def get_data(self):
@@ -49,12 +53,25 @@ class Psychro:
         nb_psychro_variables = len(test)
         nb_points = len(self.temp)
         
-        psych_arr = tuple(np.zeros(nb_points) for _ in range (nb_psychro_variables))
+        plt.figure()
+        plt.plot(self.p)
+        plt.show()
         
+        psych_arr = tuple(np.zeros(nb_points) for _ in range (nb_psychro_variables))
+                
         for i in range(nb_points):
-            new_psych_arr = psychrolib.CalcPsychrometricsFromRelHum(self.temp[i], 
+            
+            # if i in [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000]:
+            #     print(i)
+
+            try:
+                new_psych_arr = psychrolib.CalcPsychrometricsFromRelHum(self.temp[i], 
                                                                     self.rh[i],
                                                                     self.p[i])
+            except:
+                new_psych_arr = np.nan(nb_psychro_variables)
+            
+                
             for k in range (nb_psychro_variables):
                 psych_arr[k][i] = new_psych_arr[k]
         
