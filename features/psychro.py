@@ -38,10 +38,11 @@ class Psychro:
         self.rh = rh.divide(100).to_numpy()
         self.rh[self.rh > 1] = 1
         self.rh[self.rh < 0 ] = 0
-        self.p = p.multiply(100)
-        self.p[self.p < 98000] = np.nan
-        self.p = self.p.interpolate()
-        self.p = self.p.to_numpy()
+        self.p = p.multiply(100).to_numpy()
+        
+        # self.p[self.p < 98000] = np.nan
+        # self.p = self.p.interpolate()
+        # self.p = self.p.to_numpy()
         
         
     def get_data(self):
