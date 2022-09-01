@@ -69,8 +69,8 @@ class Psychro:
                                                                     self.rh[i],
                                                                     self.p[i])
             except:
-                new_psych_arr = np.nan(nb_psychro_variables)
-            
+                new_psych_arr = np.empty(nb_psychro_variables)
+                new_psych_arr[:] = np.NaN
                 
             for k in range (nb_psychro_variables):
                 psych_arr[k][i] = new_psych_arr[k]
