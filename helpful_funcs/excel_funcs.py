@@ -46,6 +46,12 @@ class ReadExcel:
 					"Latitude": sheet["I4"].value,
 					"Longitude": sheet["I5"].value,
 					"Altitude": sheet["I6"].value,
+                    "M&V option": sheet['D13'].value,
+                    "Utility": {
+                        "name": sheet['D14'].value,
+                        "unit": sheet['E14'].value
+                        },
+                    "Scope":sheet["D15"].value
 					}
     
     

@@ -115,11 +115,11 @@ if st.session_state['results'] == 1:
         
 
         plot = px.scatter()
-        plot.add_scatter(x= selected_baseline, y = selected_prediction, mode = 'markers', name = 'points to keep')
-        plot.add_scatter(x = outliers_baseline, y = outliers_prediction, mode = 'markers', name = 'points to remove')
-        plot.update_layout(title = {'text' : 'Predictions as a function of the baseline','x':0.47, 'xanchor': 'center', 'yanchor': 'top'},
+        plot.add_scatter(x= selected_baseline, y = selected_prediction, mode = 'markers', marker = dict(color = 'blue'), name = 'points to keep')
+        plot.add_scatter(x = outliers_baseline, y = outliers_prediction, mode = 'markers', marker = dict(color = 'red'), name = 'points to remove')
+        plot.update_layout(title = {'text' : 'Predictions of '+ str(sel_combi)+ ' as a function of the baseline','x':0.47, 'xanchor': 'center', 'yanchor': 'top'},
                            xaxis_title ='Baseline', yaxis_title='Predictions')
-        plot.add_scatter(x = st.session_state['y_df'+str(sel_combi)+str(itera)], y = st.session_state['y_df'+str(sel_combi)+str(itera)], mode='lines', name = 'y = x')
+        plot.add_scatter(x = st.session_state['y_df'+str(sel_combi)+str(itera)], y = st.session_state['y_df'+str(sel_combi)+str(itera)], mode='lines', marker = dict(color = 'green'), name = 'y = x')
         
         # plot = px.scatter( x = st.session_state['y_df'+str(sel_combi)+str(itera)], y = st.session_state['results_dict'+str(sel_combi)+str(itera)][sel_combi]['y_pred'], labels = {'x':'Baseline', 'y':'optimized predictions for '+ str(sel_combi) + str(itera)})
         
@@ -342,11 +342,11 @@ if st.session_state['results'] == 1:
             
 
             plot = px.scatter(labels = {'x':'Time', 'y':'Baseline'})
-            plot.add_scatter(x= selected_baseline, y = selected_prediction, mode = 'markers', name = 'points kept')
-            plot.add_scatter(x = outliers_baseline, y = outliers_prediction, mode = 'markers', name = 'points removed')
+            plot.add_scatter(x= selected_baseline, y = selected_prediction, mode = 'markers', marker = dict(color = 'blue'), name = 'points kept')
+            plot.add_scatter(x = outliers_baseline, y = outliers_prediction, mode = 'markers', marker = dict(color = 'red'), name = 'points removed')
             
-            plot.add_scatter(x = st.session_state['y_df'+string], y = st.session_state['y_df'+string], mode='lines', name = 'y = x')
-            plot.update_layout(title = {'text' : 'Predictions as a function of the baseline','x':0.47, 'xanchor': 'center', 'yanchor': 'top'},
+            plot.add_scatter(x = st.session_state['y_df'+string], y = st.session_state['y_df'+string], mode='lines', marker = dict(color = 'green'), name = 'y = x')
+            plot.update_layout(title = {'text' : 'Predictions of '+ str(sel_combi2) +' as a function of the baseline','x':0.47, 'xanchor': 'center', 'yanchor': 'top'},
                                xaxis_title ='Baseline', yaxis_title='Predictions')
             plotly_events(plot, click_event=False, key = -st.session_state['iter']-1)
             
@@ -395,9 +395,9 @@ if st.session_state['results'] == 2:
     with col_3:
 
         plot = px.scatter(labels = {'x':'Time', 'y':'Baseline'})
-        plot.add_scatter(x= selected_baseline, y = selected_prediction, mode = 'markers', name = 'points kept')
-        plot.add_scatter(x = outliers_baseline, y = outliers_prediction, mode = 'markers', name = 'points removed')
-        plot.add_scatter(x = st.session_state['y_df_results'], y = st.session_state['y_df_results'], mode='lines', name = 'y = x')
+        plot.add_scatter(x= selected_baseline, y = selected_prediction, mode = 'markers', marker = dict(color = 'blue'), name = 'points kept')
+        plot.add_scatter(x = outliers_baseline, y = outliers_prediction, mode = 'markers', marker = dict(color = 'red'), name = 'points removed')
+        plot.add_scatter(x = st.session_state['y_df_results'], y = st.session_state['y_df_results'], mode='lines', marker = dict(color = 'green'), name = 'y = x')
         plot.update_layout(title = {'text' : 'Predictions as a function of the baseline','x':0.47, 'xanchor': 'center', 'yanchor': 'top'},
                            xaxis_title ='Baseline', yaxis_title='Predictions')
         plotly_events(plot, click_event=False, key = -st.session_state['iter'])

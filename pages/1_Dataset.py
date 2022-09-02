@@ -181,8 +181,8 @@ if st.session_state['outliers_removal'] == 1:
 
 
     plot = px.scatter()
-    plot.add_scatter(x= selected_date, y = selected_y, mode = 'markers', name = 'points to keep')
-    plot.add_scatter(x = outliers_date, y = outliers_y, mode = 'markers', name = 'points to remove')
+    plot.add_scatter(x= selected_date, y = selected_y, mode = 'markers', marker = dict(color = 'green'), name = 'points to keep')
+    plot.add_scatter(x = outliers_date, y = outliers_y, mode = 'markers', marker = dict(color = 'red'), name = 'points to remove')
     plot.update_layout(title = {'text' : 'Baseline as a function of time','x':0.47, 'xanchor': 'center', 'yanchor': 'top'},
                        xaxis_title ='Time', yaxis_title='Baseline')
     st.session_state['selected_pt'] = plotly_events(plot, click_event = True, key = st.session_state['iter'])
@@ -250,8 +250,8 @@ if st.session_state['outliers_removal'] == 2:
     outliers_y = [st.session_state['outliers_points'][x]['y'] for x in st.session_state['outliers_points']]
 
     plot = px.scatter()
-    plot.add_scatter(x= selected_date, y = selected_y, mode = 'markers', name = 'points kept')
-    plot.add_scatter(x = outliers_date, y = outliers_y, mode = 'markers', name = 'points removed')
+    plot.add_scatter(x= selected_date, y = selected_y, mode = 'markers', marker = dict(color = 'green'), name = 'points kept')
+    plot.add_scatter(x = outliers_date, y = outliers_y, mode = 'markers', marker = dict(color = 'red'), name = 'points removed')
     plot.update_layout(title = {'text' : 'Baseline as a function of time','x':0.47, 'xanchor': 'center', 'yanchor': 'top'},
                        xaxis_title ='Time', yaxis_title='Baseline')
     st.session_state['selected_pt'] = plotly_events(plot, click_event = False, key = st.session_state['iter'])
