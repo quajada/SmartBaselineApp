@@ -195,10 +195,6 @@ if st.session_state['database'] == 1.5:
     
             
 if st.session_state['database'] == 2:
-    
-    if st.button('OKK', key = 1902890819081908129081290182093):
-        st.session_state['database'] = 1
-        st.experimental_rerun()
         
     st.write('Data updated succesfully')
     
