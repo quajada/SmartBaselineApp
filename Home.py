@@ -45,6 +45,9 @@ initialization(st)
 st.title('Smart baseline')
 st.text("Let's find the best regression model to predict the baseline !")
 
+if 'name_sidebar' in st.session_state:
+    st.sidebar.title("Project name : " + st.session_state['name_sidebar'])
+
 
 if st.session_state['home'] == 0:
 

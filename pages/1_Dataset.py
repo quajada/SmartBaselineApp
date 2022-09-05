@@ -31,6 +31,8 @@ from helpful_funcs.useful_funcs import *
 
 initialization(st)
 
+if 'name_sidebar' in st.session_state:
+    st.sidebar.title("Project name : " + st.session_state['name_sidebar'])
 
 
 
@@ -107,6 +109,7 @@ if st.session_state['file_uploaded'] == 2:
     if st.session_state['data_uploaded'] == 1:
 
         st.session_state['excel'] = ReadExcel(st.session_state['file'])
+        st.session_state['name_sidebar'] = st.session_state['excel'].data['Project name']
         x_df, y_df = st.session_state['excel'].preprocess_data(st.session_state['file'])
         
         clean = CleanColumns(x_df)
@@ -128,6 +131,7 @@ if st.session_state['file_uploaded'] == 2:
         st.session_state['data_uploaded'] = 2
         st.session_state['outliers_removal'] = 1
         initialize_selected_outliers_points(st)
+        st.experimental_rerun()
 
     if st.session_state['data_uploaded'] == 2:
                 

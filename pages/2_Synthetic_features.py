@@ -32,6 +32,9 @@ from helpful_funcs.useful_funcs import *
 
 initialization(st)
 
+if 'name_sidebar' in st.session_state:
+    st.sidebar.title("Project name : " + st.session_state['name_sidebar'])
+
 
 st.header('Create synthetic features')
 

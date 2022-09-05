@@ -34,6 +34,9 @@ from helpful_funcs.useful_funcs import initialization
 
 initialization(st)
 
+if 'name_sidebar' in st.session_state:
+    st.sidebar.title("Project name : " + st.session_state['name_sidebar'])
+
 
 st.header('Update the database')
 
@@ -46,7 +49,7 @@ if st.session_state['database'] == 1:
     
     st.write('The final model is : **'+ st.session_state['equation']+ '**')
     
-    if st.button('ADD TO DATABASE', key ='update_database') or ('updating_database' in st.session_state and st.session_state['updating_database']):
+    if st.button('ADD "' + st.session_state['name_sidebar'] + '" TO DATABASE', key ='update_database') or ('updating_database' in st.session_state and st.session_state['updating_database']):
         st.session_state['database'] = 1.1
         st.experimental_rerun()
         
@@ -83,8 +86,8 @@ if st.session_state['database'] == 1.2:
         
         if st.session_state['new_database']['Utility']['name'] in [st.session_state['old_db'][st.session_state['project_name']][i]['Utility']['name'] for i in range (len(st.session_state['old_db'][st.session_state['project_name']]))] :
         
-            st.write('One or more projects with the same name already exist for the same utility. You could change the name of your current project, or add the new project next to the old project(s), or replace the old project(s) by the new project and lose the past information.')
-            st.session_state['choice'] = st.selectbox(label = 'Pick an option to continue', options = ['Change the name', 'Add new project', 'Replace old project(s)'])
+            st.write('One or more projects with the name ' + st.session_state['name_sidebar']+  ' already exist for the same utility. You could change the name of your current project, or add the new project next to the old project(s), or replace the old project(s) by the new project and lose the past information.')
+            st.session_state['choice'] = st.selectbox(label = 'Pick an option to continue', options = ['Change the name', 'Add entry to existing project', 'Replace old project(s)'])
         
             if st.button('Final choice ?', key = 198908907316789):
                 st.session_state['database'] = 1.3

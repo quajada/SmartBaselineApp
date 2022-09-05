@@ -33,6 +33,9 @@ from PIL import Image
 
 initialization(st)
 
+if 'name_sidebar' in st.session_state:
+    st.sidebar.title("Project name : " + st.session_state['name_sidebar'])
+
 st.header('Feature removal')
 
 st.subheader('Automatic')    
