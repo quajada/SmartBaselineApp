@@ -121,7 +121,7 @@ class ReadExcel:
         
         df_weather = w.get_data(self.start, self.end)
         
-        print(df_weather)
+        # print(df_weather)
         
         # Psychrometric data
         df_psych = Psychro(df_weather['temp'],
@@ -135,7 +135,7 @@ class ReadExcel:
         # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')
         base_temps = [18, 19, 20, 21, 22, 23, 24]
         
-        print(weather_features)
+        # print(weather_features)
         for bt in base_temps:
             cdd = CDD(bt)
             cdd_df = cdd.compute(weather_features['temp'])
@@ -144,9 +144,9 @@ class ReadExcel:
             
             # cdd_df = cdd_df.astype('float16')   
             # hdd_df = hdd_df.astype('float16')
-            print(hdd_df)
+            # print(hdd_df)
             # print(len(hdd_df))
-            print(bt)
+            # print(bt)
             # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')
             weather_features = weather_features.merge(cdd_df, left_index=True, right_index=True)
             # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')   

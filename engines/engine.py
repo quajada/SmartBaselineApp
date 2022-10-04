@@ -200,7 +200,7 @@ class Engine:
     
 
 
-    def compute_cross_validation(self):
+    def compute_cross_validation2(self):
         
         nb_iterations = self.nb_folds
             
@@ -291,6 +291,92 @@ class Engine:
     
     
     
+
+
+
+
+
+    
+    def compute_cross_validation(self):
+        
+        nb_iterations = self.nb_folds
+            
+        nombre_total = len(self.combinations)
+        itera = 0
+        
+        for combination in self.combinations:
+            
+            itera += 1
+            
+            if itera == int(nombre_total/4):
+                print('UN QUART')
+            
+            self.results[combination] = {}
+            self.results[combination]['r2_cv_test'] = []
+            self.results[combination]['pval_cv'] = {}
+            self.results[combination]['tval_cv'] = {}
+            for i in range (1+len(combination)):
+                self.results[combination]['pval_cv'][i] = []
+                self.results[combination]['tval_cv'][i] = []
+            self.results[combination]['std_dev_cv_test'] = []
+            self.results[combination]['cv_rmse_cv'] = []
+
+            for n in range(nb_iterations):
+        
+                new_X_train, new_X_test, new_y_df_train, new_y_df_test = train_test_split(self.x_df, self.y_df, test_size= self.test_size, shuffle=True) 
+        
+                new_X_train = new_X_train[[combination[i] for i in range(len(combination))]]
+                new_X_train = new_X_train.values.astype(np.float64)
+                
+                new_X_test = new_X_test[[combination[i] for i in range(len(combination))]]
+                new_X_test = new_X_test.values.astype(np.float64)
+                
+                # new_X_train, new_X_test, new_y_train, new_y_test = train_test_split(self.x_df, self.y_df['Normalized baseline'], test_size= self.test_size/len(self.x_df), shuffle=True) 
+                
+                new_y_test = new_y_df_test['Normalized baseline'].astype(np.float64).tolist()
+                new_y_train = new_y_df_train['Normalized baseline'].astype(np.float64).tolist()
+                
+                
+                ml = LinearRegression()
+                ml.fit(new_X_train, new_y_train)
+                y_pred = ml.predict(new_X_test)
+                # timedelta = new_Y_df_test['Timedelta'].tolist()
+                # for k in range (len(y_pred)):
+                #     y_pred[k] = y_pred[k] * timedelta[k]
+
+                # pvalues, tvalues = self.compute_pval_and_tval(ml, new_X_test, new_y_test, y_pred)
+                
+                
+                # pvalues, tvalues = self.compute_pval_and_tval(ml, new_X_test, new_y_test, y_pred)
+                std_dev = self._compute_std_dev(new_y_test, y_pred, len(combination))
+                
+                # print(r2_score(new_y_test, y_pred))
+                
+                self.results[combination]['r2_cv_test'].append(r2_score(new_y_test, y_pred))
+                self.results[combination]['std_dev_cv_test'].append(std_dev)
+
+                # for i in range (len(pvalues)):
+                #     self.results[combination]['pval_cv'][i].append(pvalues[i])
+                                            
+                # for i in range (len(tvalues)):
+                #     self.results[combination]['tval_cv'][i].append(abs(tvalues[i]))
+                # self.results[combination]['cv_rmse_cv'].append(self.compute_cv_rmse(std_dev, new_X_test, new_y_test, y_pred))
+
+            self.results[combination]['r2_cv_test'] = mean(self.results[combination]['r2_cv_test']) - 0*stdev(self.results[combination]['r2_cv_test'])
+            self.results[combination]['std_dev_cv_test'] = mean(self.results[combination]['std_dev_cv_test']) + 0*stdev(self.results[combination]['std_dev_cv_test'])
+            # self.results[combination]['cv_rmse_cv'] = mean(self.results[combination]['cv_rmse_cv']) + 0*stdev(self.results[combination]['cv_rmse_cv'])
+
+            # pval = []        
+            # tval = []
+            # for i in range (len(combination)+1):
+            #     pval.append(mean(self.results[combination]['pval_cv'][i])+0*stdev(self.results[combination]['pval_cv'][i]))
+            #     tval.append(median(self.results[combination]['tval_cv'][i])-0*stdev(self.results[combination]['tval_cv'][i]))
+            
+            # self.results[combination]['pval_cv'] = pval
+            # self.results[combination]['tval_cv'] = tval
+
+        return self.results
+
     
     
     

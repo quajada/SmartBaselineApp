@@ -48,9 +48,8 @@ if __name__ == "__main__":
     
     # print(units2)
 
-
-    path = r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\Input_template - Test.xlsx"
-    # path = r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\Input_template.xlsx"
+    # path = r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\Input_template - Test.xlsx"
+    path = r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\Input_template.xlsx"
     # path = r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\Input_template - Turkey.xlsx"
     e = ReadExcel(path)
     x_df, y_df, baseline = e.preprocess_data(path)
@@ -127,12 +126,12 @@ if __name__ == "__main__":
     
     combi = Combinations(x_df.columns, 2)
     combinations = combi.compute_combinations(x_df)
-    # combinations = [('passengers',)]
-    final = Engine(x_df, y_df, combinations, max_variables = 2, nb_folds = 10, test_size = 4)
+    # # combinations = [('passengers',)]
+    final = Engine(x_df, y_df, combinations, max_variables = 1, nb_folds = 100, test_size = 18)
     # IPMVP_combinations, IMPVP_combi_compliant = final.get_IPMVP_combinations()
-    # IPMVP_results, IPMVP_compliant = final.compute_IPMVP_results()
-    # not_overfitting_results, no_overfit = final.remove_overfitting()
-    # final_results = final.show_top_results(criteria='std_dev', nb_variables=2, nb_top = 30)
+    # # IPMVP_results, IPMVP_compliant = final.compute_IPMVP_results()
+    # # not_overfitting_results, no_overfit = final.remove_overfitting()
+    # # final_results = final.show_top_results(criteria='std_dev', nb_variables=2, nb_top = 30)
 
     final.compute_cross_validation()
     # final.are_combinations_IPMVP_consistently_compliant()
