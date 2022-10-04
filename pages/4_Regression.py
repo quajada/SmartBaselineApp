@@ -106,6 +106,8 @@ if st.session_state['regression_done'] == 1:
                     combi = Combinations(st.session_state['x_df_regression'].columns, st.session_state['max_features'])
                     combinations = combi.compute_combinations(st.session_state['x_df_regression'])
                     
+                    st.write(st.session_state['y_df_regression'])
+                    
                     final = Engine(st.session_state['x_df_regression'], st.session_state['y_df_regression'], combinations, max_variables = st.session_state['max_features'], nb_folds = st.session_state['nb_folds'], test_size = st.session_state['test_size'])
                     final.compute_cross_validation()
                     # final.are_combinations_IPMVP_consistently_compliant()
@@ -130,11 +132,11 @@ if st.session_state['regression_done'] == 2:
     
     st.selectbox('Number of features for each model:', options = [st.session_state['max_features_str']], disabled = True)
     
-    st.number_input('How many folds (or iterations) do you want? If you increase the number of folds, the calculation will take longer, but you will evaluate more scenarios.', min_value = 2, max_value = 200, value = st.session_state['nb_folds'], step =1, disabled = True)
+    st.number_input('How many folds (or iterations) do you want? If you increase the number of folds, the calculation will take longer, but you will evaluate more scenarios.', min_value = 2, max_value = 200, value = st.session_state['nb_folds'], step =1, key = 198219083290819380198091980, disabled = True)
     
     st.slider('For each fold, the data will be split into training and testing sets. What percentage of your dataset do you want to use for testing?'+
               " Note that the minimum number of test points is your number of features + 2.",
-              min_value = 1, max_value = 50,  value = st.session_state['test_size_chosen'], step = 1, disabled = True)
+              min_value = 1, max_value = 50,  value = st.session_state['test_size_chosen'], step = 1, key = 18787897879, disabled = True)
 
 
     st.write('')

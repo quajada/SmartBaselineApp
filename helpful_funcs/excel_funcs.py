@@ -25,35 +25,49 @@ class ReadExcel:
         # Extract params from excel file
         self.data = {
 					"Project name": sheet["D2"].value,
-					"Building type": sheet["D3"].value,
-					"Building subtype": sheet["D4"].value,
+                    "Scope": sheet["D3"].value,
+					"Type": sheet["D4"].value,
+                    "Subtype": sheet["D5"].value,
+                    "Construction year": sheet["D6"].value,
 					"Built-up area": {
-						"value": sheet["D5"].value,
-						"unit": sheet["E5"].value
+						"value": sheet["D7"].value,
+						"unit": sheet["E7"].value
 						},					
 					"Gross floor conditioned area": {
-						"value": sheet["D6"].value,
-						"unit": sheet["E6"].value
+						"value": sheet["D8"].value,
+						"unit": sheet["E8"].value
 						},		
-					"Number of floors including ground": sheet["D7"].value,
-					"Number of parking floors/basements": sheet["D8"].value,
-					"Cooling source": sheet["D9"].value,
-					"Renewable energy sources": sheet["D10"].value,
-					"Sewage Treatment Plant (STP)": sheet["D11"].value,
+                    "Number of buildings": sheet["D9"].value,
+					"Number of floors including ground": sheet["D10"].value,
+					"Number of parking floors/basements": sheet["D11"].value,
+					"Cooling source": sheet["D12"].value,
+					"Renewable energy sources": sheet["D13"].value,
+					"Sewage Treatment Plant (STP)": sheet["D14"].value,
 					
-					"Locator type": sheet["I2"].value,
+					"Address": sheet["I2"].value,
 					"City": sheet["I3"].value,
 					"Latitude": sheet["I4"].value,
 					"Longitude": sheet["I5"].value,
 					"Altitude": sheet["I6"].value,
-                    "M&V option": sheet['D13'].value,
+                    
+                    "Baseline from": sheet['D16'].value,
+                    "Baseline to": sheet['D17'].value,
+                    "M&V option": sheet['D18'].value,
                     "Utility": {
-                        "name": sheet['D14'].value,
-                        "unit": sheet['E14'].value
+                        "name": sheet['D19'].value,
+                        "unit": sheet['E19'].value
                         },
-                    "Scope":sheet["D15"].value
+                    "M&V scope":sheet["D20"].value,
+                    "Savings": { 
+                        "value": sheet["D21"].value,
+                        "unit": sheet["E21"].value,
+                        },
+                    "Currency": sheet["D22"].value,
+                    "Base tariff without VAT": {
+                        "value": sheet["D23"].value,
+                        "unit": sheet["E23"].value
+                        }
 					}
-    
     
     
     def table_to_df(self, ws, table: str):
@@ -107,30 +121,38 @@ class ReadExcel:
         
         df_weather = w.get_data(self.start, self.end)
         
+        print(df_weather)
+        
         # Psychrometric data
         df_psych = Psychro(df_weather['temp'],
                            df_weather['rhum'],
                            df_weather['pres'])
-        print('AAAAAAAA')
-        
+
         df_psych = df_psych.get_data()
-        
-        print('BBBBBBBBBB')
-        
-        
+
         # Merge weather features
         weather_features = df_weather.merge(df_psych, left_index=True, right_index=True)
-        
-        # Add CDD
+        # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')
         base_temps = [18, 19, 20, 21, 22, 23, 24]
+        
+        print(weather_features)
         for bt in base_temps:
             cdd = CDD(bt)
             cdd_df = cdd.compute(weather_features['temp'])
             hdd = HDD(bt)
             hdd_df = hdd.compute(weather_features['temp'])
+            
+            # cdd_df = cdd_df.astype('float16')   
+            # hdd_df = hdd_df.astype('float16')
+            print(hdd_df)
+            # print(len(hdd_df))
+            print(bt)
+            # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')
             weather_features = weather_features.merge(cdd_df, left_index=True, right_index=True)
+            # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')   
             weather_features = weather_features.merge(hdd_df, left_index=True, right_index=True)
-        
+            # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')  
+            
         for feature in self.features.columns[2:]:
             self.features[feature] = self.features[feature].astype(float)
             
@@ -165,8 +187,17 @@ class ReadExcel:
         
         # clean_col = CleanColumns(x_df)
         # x_df = clean_col.remove_bad_columns()
+        
+        y_df = y_df.drop(['Timedelta'], axis = 1)
+        
+        timedelta = np.zeros(len(y_df))
+        for i in range(len(timedelta)):
+            timedelta[i] = (y_df['To (excl)'][i]-y_df['From (incl)'][i]).total_seconds()/3600
+        y_df['Timedelta'] = timedelta
 
-        return x_df, y_df
+        baseline = self.get_baseline(normalize = False)
+
+        return x_df, y_df, baseline
     
     
     @property
@@ -182,6 +213,7 @@ class ReadExcel:
             df['Normalized baseline'] = df.iloc[:, 2] / (df['Timedelta'] / np.timedelta64(1, 'h'))
         self._baseline = df
         return df
+        
     
     @property
     def features(self):

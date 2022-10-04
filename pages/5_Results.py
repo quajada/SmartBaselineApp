@@ -48,8 +48,6 @@ if st.session_state['results'] == 0:
 
 if st.session_state['results'] == 1:
     
-
-    
     st.session_state['x_df_results'] = st.session_state['x_df_regression'].copy()
     st.session_state['y_df_results'] = st.session_state['y_df_regression'].copy()
     
@@ -68,6 +66,7 @@ if st.session_state['results'] == 1:
                         update_mode= GridUpdateMode.SELECTION_CHANGED)
     
     st.write(str(len(st.session_state['results_df'])) + " rows, " + str(len(st.session_state['results_df'].columns))+ " columns")
+    st.session_state['nb_of_results'] = len(st.session_state['results_df'])
     
     sel_row = grid1["selected_rows"]
     
@@ -105,7 +104,7 @@ if st.session_state['results'] == 1:
             
             for time in st.session_state['y_df'+string].index:
                 st.session_state['selected_points'+string][time]= {}
-                st.session_state['selected_points'+string][time]['baseline'] = st.session_state['y_df'+string][time]
+                st.session_state['selected_points'+string][time]['baseline'] = st.session_state['y_df'+string]['Normalized baseline'][time]
                 st.session_state['selected_points'+string][time]['prediction'] = y_pred_df['y_pred'][time]
 
             
@@ -115,17 +114,16 @@ if st.session_state['results'] == 1:
         outliers_baseline = [st.session_state['outliers_points'+string][time]['baseline'] for time in st.session_state['outliers_points'+string]]
         outliers_prediction = [st.session_state['outliers_points'+string][time]['prediction'] for time in st.session_state['outliers_points'+string]]
         
-
         plot = px.scatter()
         plot.add_scatter(x= selected_baseline, y = selected_prediction, mode = 'markers', marker = dict(color = 'blue'), name = 'points to keep')
         plot.add_scatter(x = outliers_baseline, y = outliers_prediction, mode = 'markers', marker = dict(color = 'red'), name = 'points to remove')
         plot.update_layout(title = {'text' : 'Predictions of '+ str(sel_combi)+ ' as a function of the baseline','x':0.47, 'xanchor': 'center', 'yanchor': 'top'},
                            xaxis_title ='Baseline', yaxis_title='Predictions')
-        plot.add_scatter(x = st.session_state['y_df'+str(sel_combi)+str(itera)], y = st.session_state['y_df'+str(sel_combi)+str(itera)], mode='lines', marker = dict(color = 'green'), name = 'y = x')
+        plot.add_scatter(x = st.session_state['y_df'+str(sel_combi)+str(itera)]['Normalized baseline'], y = st.session_state['y_df'+str(sel_combi)+str(itera)]['Normalized baseline'], mode='lines', marker = dict(color = 'green'), name = 'y = x')
         
         # plot = px.scatter( x = st.session_state['y_df'+str(sel_combi)+str(itera)], y = st.session_state['results_dict'+str(sel_combi)+str(itera)][sel_combi]['y_pred'], labels = {'x':'Baseline', 'y':'optimized predictions for '+ str(sel_combi) + str(itera)})
         
-        y = st.session_state['y_df' + str(sel_combi)+str(itera)]
+        y = st.session_state['y_df' + str(sel_combi)+str(itera)]['Normalized baseline']
         std_dev = st.session_state['results_dict'][sel_combi]['std_dev']
         
         colours = ['pink', 'yellow', 'orange']
@@ -259,7 +257,7 @@ if st.session_state['results'] == 1:
                         clean.remove_rows(times)
                         st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)] = clean.x_df, clean.y_df
                         
-                        final2 = Engine(st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)], [sel_combi], max_variables = st.session_state['max_features'], nb_folds = st.session_state['nb_folds'], test_size = st.session_state['test_size'])
+                        final2 = Engine(st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)]['Normalized baseline'], [sel_combi], max_variables = st.session_state['max_features'], nb_folds = st.session_state['nb_folds'], test_size = st.session_state['test_size'])
                         final2.compute_cross_validation()
                         final2.are_combinations_IPMVP_compliant()
                         final2.get_df_results()
@@ -330,7 +328,7 @@ if st.session_state['results'] == 1:
             
             for time in st.session_state['y_df'+string].index:
                 st.session_state['selected_points'+string][time]= {}
-                st.session_state['selected_points'+string][time]['baseline'] = st.session_state['y_df'+string][time]
+                st.session_state['selected_points'+string][time]['baseline'] = st.session_state['y_df'+string]['Normalized baseline'][time]
                 st.session_state['selected_points'+string][time]['prediction'] = y_pred_df['y_pred'][time]
 
         
@@ -347,7 +345,7 @@ if st.session_state['results'] == 1:
             plot.add_scatter(x= selected_baseline, y = selected_prediction, mode = 'markers', marker = dict(color = 'blue'), name = 'points kept')
             plot.add_scatter(x = outliers_baseline, y = outliers_prediction, mode = 'markers', marker = dict(color = 'red'), name = 'points removed')
             
-            plot.add_scatter(x = st.session_state['y_df'+string], y = st.session_state['y_df'+string], mode='lines', marker = dict(color = 'green'), name = 'y = x')
+            plot.add_scatter(x = st.session_state['y_df'+string]['Normalized baseline'], y = st.session_state['y_df'+string]['Normalized baseline'], mode='lines', marker = dict(color = 'green'), name = 'y = x')
             plot.update_layout(title = {'text' : 'Predictions of '+ str(sel_combi2) +' as a function of the baseline','x':0.47, 'xanchor': 'center', 'yanchor': 'top'},
                                xaxis_title ='Baseline', yaxis_title='Predictions')
             plotly_events(plot, click_event=False, key = -st.session_state['iter']-1)
@@ -392,14 +390,14 @@ if st.session_state['results'] == 2:
     outliers_baseline = [st.session_state['outliers_points'+string][time]['baseline'] for time in st.session_state['outliers_points'+string]]
     outliers_prediction = [st.session_state['outliers_points'+string][time]['prediction'] for time in st.session_state['outliers_points'+string]]
     
-    col_3, col_4 = st.columns(2)       
+    col_3, col_4 = st.columns(2)
     
     with col_3:
 
         plot = px.scatter(labels = {'x':'Time', 'y':'Baseline'})
         plot.add_scatter(x= selected_baseline, y = selected_prediction, mode = 'markers', marker = dict(color = 'blue'), name = 'points kept')
         plot.add_scatter(x = outliers_baseline, y = outliers_prediction, mode = 'markers', marker = dict(color = 'red'), name = 'points removed')
-        plot.add_scatter(x = st.session_state['y_df_results'], y = st.session_state['y_df_results'], mode='lines', marker = dict(color = 'green'), name = 'y = x')
+        plot.add_scatter(x = st.session_state['y_df_results']['Normalized baseline'], y = st.session_state['y_df_results']['Normalized baseline'], mode='lines', marker = dict(color = 'green'), name = 'y = x')
         plot.update_layout(title = {'text' : 'Predictions as a function of the baseline','x':0.47, 'xanchor': 'center', 'yanchor': 'top'},
                            xaxis_title ='Baseline', yaxis_title='Predictions')
         plotly_events(plot, click_event=False, key = -st.session_state['iter'])

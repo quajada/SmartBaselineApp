@@ -79,7 +79,7 @@ if st.session_state['filters_applied'] == 1:
         
         with st.spinner('Appying the filters'):
             
-            filt = FilterData(st.session_state['x_df_filters'], st.session_state['y_df_filters'])
+            filt = FilterData(st.session_state['x_df_filters'], st.session_state['y_df_filters']['Normalized baseline'])
             
             st.session_state['bad_features_pearson'] = filt.get_bad_features_pearson(st.session_state['pearson'])
             filt.remove_features(st.session_state['bad_features_pearson'])
@@ -169,7 +169,7 @@ if st.session_state['filters_manual'] == 1:
         
         with col_3:
             fig = plt.figure()
-            plt.scatter(st.session_state['x_df_filters'][feature_chosen], st.session_state['y_df_filters'].values, color = 'blue')
+            plt.scatter(st.session_state['x_df_filters'][feature_chosen], st.session_state['y_df_filters']['Normalized baseline'].values, color = 'blue')
             plt.ylabel('Baseline')
             plt.xlabel(str(feature_chosen))
             plt.title('Baseline as a function of '+ str(feature_chosen))
@@ -215,7 +215,7 @@ if st.session_state['filters_manual'] == 2:
         
         with col_3:
             fig = plt.figure()
-            plt.scatter(st.session_state['x_df_filters'][feature_chosen], st.session_state['y_df_filters'].values, color = 'blue')
+            plt.scatter(st.session_state['x_df_filters'][feature_chosen], st.session_state['y_df_filters']['Normalized baseline'].values, color = 'blue')
             plt.ylabel('Baseline')
             plt.xlabel(str(feature_chosen))
             plt.title('Baseline as a function of '+ str(feature_chosen))

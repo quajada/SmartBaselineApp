@@ -35,7 +35,6 @@ if 'name_sidebar' in st.session_state:
     st.sidebar.title("Project name : " + st.session_state['name_sidebar'])
 
 
-
 def rename(x_df):
     
     names = {}
@@ -109,8 +108,9 @@ if st.session_state['file_uploaded'] == 2:
     if st.session_state['data_uploaded'] == 1:
 
         st.session_state['excel'] = ReadExcel(st.session_state['file'])
+        
         st.session_state['name_sidebar'] = st.session_state['excel'].data['Project name']
-        x_df, y_df = st.session_state['excel'].preprocess_data(st.session_state['file'])
+        x_df, y_df, baseline = st.session_state['excel'].preprocess_data(st.session_state['file'])
         
         clean = CleanColumns(x_df)
         clean.remove_nan()
@@ -121,9 +121,11 @@ if st.session_state['file_uploaded'] == 2:
         
         st.session_state['sheet'] = st.session_state['excel'].wb['Project']
         st.session_state['x_df_dataset'] = x_df
-        st.session_state['y_df_with_dates'] = y_df[['From (incl)', 'Normalized baseline']]
+        st.session_state['y_df_with_dates'] = y_df[['From (incl)', 'To (excl)', 'Normalized baseline']]
         st.session_state['y_df_with_dates']['Normalized baseline'] = y_df['Normalized baseline'].astype(np.float64)
-        st.session_state['y_df_dataset'] = y_df['Normalized baseline'].astype(np.float64)
+        st.session_state['y_df_with_dates']['Baseline'] = baseline[baseline.columns[-1]].astype(np.float64)
+        st.session_state['y_df_dataset'] = st.session_state['y_df_with_dates'].copy()
+        st.session_state['y_df_dataset']['Timedelta'] = y_df['Timedelta']
         
         rename(st.session_state['x_df_dataset'])
         

@@ -47,23 +47,18 @@ class Psychro:
         
     def get_data(self):
         
-        test = psychrolib.CalcPsychrometricsFromRelHum(self.temp[0], 
-                                                       self.rh[0],
-                                                       self.p[0])
+        # test = psychrolib.CalcPsychrometricsFromRelHum(self.temp[0], 
+        #                                                self.rh[0],
+        #                                                self.p[0])
         
-        nb_psychro_variables = len(test)
+        # nb_psychro_variables = len(test)
+        
+        nb_psychro_variables = 7
         nb_points = len(self.temp)
-        
-        plt.figure()
-        plt.plot(self.p)
-        plt.show()
         
         psych_arr = tuple(np.zeros(nb_points) for _ in range (nb_psychro_variables))
                 
         for i in range(nb_points):
-            
-            # if i in [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000]:
-            #     print(i)
 
             try:
                 new_psych_arr = psychrolib.CalcPsychrometricsFromRelHum(self.temp[i], 

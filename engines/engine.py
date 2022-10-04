@@ -14,12 +14,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 from scipy import stats
 from statistics import mean, stdev
+from itertools import combinations
+import random
 
 class Engine:
     
-    def __init__(self, x_df, y_values, combinations, max_variables, nb_folds, test_size):
+    def __init__(self, x_df, y_df, combinations, max_variables, nb_folds, test_size):
         self.x_df = x_df
-        self.y_values = y_values
+        self.y_df = y_df
         self.combinations = combinations
         self.max_variables = max_variables
         self.nb_folds = nb_folds
@@ -40,16 +42,43 @@ class Engine:
         p_val = np.round(p_val,3)
         p_val
         return p_val.tolist(), t_val.tolist()
-
-
-    def compute_std_dev(self, X_test, y_test, y_pred):
-        y = (y_test - y_pred)**2
-        std_dev = np.sqrt( sum(y) / (len(y)-X_test.shape[1]-1) )
-        return std_dev
     
     def compute_cv_rmse(self, std_dev, X_test, y_test, y_pred):
         cv_rmse = std_dev/mean(y_test)
         return cv_rmse
+    
+
+    def _compute_y_pred(self, coefs, combination):
+        y_pred = np.ones(len(self.y_df['Normalized baseline']))*coefs[0]
+        for i in range (len(combination)):
+            y_pred += self.x_df[combination[i]].values*coefs[i+1]
+        # timedelta = self.y_df['Timedelta'].tolist()
+        # for k in range (len(y_pred)):
+        #     y_pred[k] = y_pred[k]*timedelta[k]
+        return y_pred
+
+
+    def _compute_std_dev(self, y_test, y_pred, nb_of_var):
+        y = y_test - y_pred
+        # timedelta = self.y_df['Timedelta'].tolist()
+        # for k in range(len(y)):
+        #     y[k] = y[k] * timedelta[k]
+        y = y**2
+        std_dev = np.sqrt( sum(y) / (len(y)-nb_of_var-1) )
+        return std_dev
+        
+            
+    
+    
+    # def get_std_dev(self, ):
+    #     std_dev = []
+    #     for i in range (len(projects)):
+    #         difference = []
+    #         for n in range (len(projects[i]['Target']['normalized target'])):
+    #             difference.append( (y_pred[i][n] - projects[i]['Target']['normalized target'][n]*projects[i]['Target']['timedelta'][n])**2)
+    #         std_dev.append(np.sqrt(sum(difference)/(len(projects[i]['Target']['normalized target']) - len(projects[i]['combination']['names'])-1)))
+        
+    #     return std_dev
         
     '''
     def compute_results_from_regression_bis(self):
@@ -169,18 +198,11 @@ class Engine:
         return self.results
     """
     
-    
-        
 
-    
 
     def compute_cross_validation(self):
         
         nb_iterations = self.nb_folds
-        
-        X_train, X_test, y_train, y_test = {}, {}, {}, {}
-        
-
             
         nombre_total = len(self.combinations)
         itera = 0
@@ -202,11 +224,27 @@ class Engine:
             self.results[combination]['std_dev_cv_test'] = []
             self.results[combination]['cv_rmse_cv'] = []
 
+            from itertools import combinations
             
+            index_combi = list(combinations(self.x_df.index.tolist(), self.test_size))
             for n in range(nb_iterations):
 
-                new_X_train, new_X_test, new_y_train, new_y_test = train_test_split(self.x_df, self.y_values, test_size= self.test_size/len(self.x_df), shuffle=True) 
-
+                new_indexes = random.choice(index_combi)
+                list_indexes = [index for index in new_indexes]
+                # not_list_indexes = self.x_df.index.tolist()
+                # for index in list_indexes:
+                #     not_list_indexes.remove(index)
+                    
+                # new_X_train, new_X_test, new_y_train, new_y_test = train_test_split(self.x_df, self.y_df['Normalized baseline'], test_size= self.test_size/len(self.x_df), shuffle=True) 
+                new_X_test = self.x_df.loc[list_indexes]
+                new_X_train = self.x_df.drop(list_indexes)
+                
+                new_Y_df_test = self.y_df.loc[list_indexes]
+                new_Y_df_train = self.y_df.drop(list_indexes)
+                
+                new_y_test = new_Y_df_test['Normalized baseline'].astype(np.float64).tolist()
+                new_y_train = new_Y_df_train['Normalized baseline'].astype(np.float64).tolist()
+                
                 new_X_train = new_X_train[[combination[i] for i in range(len(combination))]]
                 new_X_train = new_X_train.values.astype(np.float64)
                 
@@ -216,9 +254,13 @@ class Engine:
                 ml = LinearRegression()
                 ml.fit(new_X_train, new_y_train)
                 y_pred = ml.predict(new_X_test)
+                # timedelta = new_Y_df_test['Timedelta'].tolist()
+                # for k in range (len(y_pred)):
+                #     y_pred[k] = y_pred[k] * timedelta[k]
 
                 # pvalues, tvalues = self.compute_pval_and_tval(ml, new_X_test, new_y_test, y_pred)
-                std_dev = self.compute_std_dev(new_X_test, new_y_test, y_pred)
+                
+                std_dev = self._compute_std_dev(new_y_test, y_pred, len(combination))
                 
                 # print(r2_score(new_y_test, y_pred))
                 
@@ -292,7 +334,7 @@ class Engine:
             new_x = new_x_df.values.astype(np.float64)
         
             X2 = sm.add_constant(new_x).astype(np.float64)
-            est = sm.OLS(self.y_values, X2)
+            est = sm.OLS(self.y_df['Normalized baseline'].astype(np.float64).tolist(), X2)
             est2 = est.fit()
             coefs = est2.params.tolist()
             
@@ -302,18 +344,16 @@ class Engine:
             self.results[combination]['coefs'] = est2.params.tolist()
             self.results[combination]['AIC'] = est2.aic
             self.results[combination]['BIC'] = est2.bic
-            self.results[combination]['std_dev'] = np.sqrt(est2.mse_resid)
-            self.results[combination]['cv_rmse'] = np.sqrt(est2.mse_resid)/mean(self.y_values)
+            self.results[combination]['cv_rmse'] = np.sqrt(est2.mse_resid)/mean(self.y_df['Normalized baseline'])
             self.results[combination]['AIC_adj'] = -2*est2.llf + 2*(self._score_combination(combination)+1)
             self.results[combination]['intercept'] = coefs[0]
             self.results[combination]['slopes'] = coefs[1:]
             self.results[combination]['size'] = len(combination)
             
-            y_pred = np.ones(len(self.y_values))*coefs[0]
-            for i in range (len(combination)):
-                y_pred += self.x_df[combination[i]].values*coefs[i+1]
+            y_pred = self._compute_y_pred(coefs, combination)
             
             self.results[combination]['y_pred'] = y_pred
+            self.results[combination]['std_dev'] = self._compute_std_dev(self.y_df['Normalized baseline'], y_pred, len(combination))
             
             isCompliant = True
             if est2.rsquared < 0.75:
@@ -329,7 +369,7 @@ class Engine:
                 if abs(tvalue) <= 2:
                     isCompliant = False
                     
-            if np.sqrt(est2.mse_resid)/mean(self.y_values) > 0.2:
+            if np.sqrt(est2.mse_resid)/mean(self.y_df['Normalized baseline']) > 0.2:
                 isCompliant = False
 
             self.results[combination]['IPMVP_compliant'] = isCompliant
@@ -409,7 +449,6 @@ class Engine:
     #     return self.best_results_df
 
 
-
     def get_df_results(self):
         columns = ['combinations', 'r2', 'std_dev', 'r2_cv_test', 'std_dev_cv_test', 'intercept', 'pval', 'tval', 'cv_rmse', 'IPMVP_compliant', 'AIC', 'AIC_adj', 'size']
         self.results_df = pd.DataFrame(index = [i for i in range (len(self.results))], columns = columns)
@@ -454,7 +493,7 @@ class Engine:
             if combination != ():
 
                 X2 = sm.add_constant(new_x).astype(np.float64)
-                est = sm.OLS(self.y_values, X2)
+                est = sm.OLS(self.y_df['Normalized baseline'].astype(np.float64).tolist(), X2)
                 est2 = est.fit()
                 
                 self.best_results[combination]['r2'] = est2.rsquared
@@ -464,7 +503,7 @@ class Engine:
                 self.best_results[combination]['AIC'] = est2.aic
                 self.best_results[combination]['BIC'] = est2.bic
                 self.best_results[combination]['std_dev'] = np.sqrt(est2.mse_resid)
-                self.best_results[combination]['cv_rmse'] = np.sqrt(est2.mse_resid)/mean(self.y_values)
+                self.best_results[combination]['cv_rmse'] = np.sqrt(est2.mse_resid)/mean(self.y_df['Normalized baseline'])
                 self.best_results[combination]['AIC_adj'] = -2*est2.llf + 2*(self._score_combination(combination)+1)
         
         print('')
