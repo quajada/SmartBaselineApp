@@ -143,7 +143,7 @@ if st.session_state['file_uploaded'] == 2:
                 st.dataframe(st.session_state['x_df_dataset'])
                 st.write(str(len(st.session_state['x_df_dataset'])) + " rows, " + str(len(st.session_state['x_df_dataset'].columns))+ " columns")
             with col_y:
-                st.dataframe(st.session_state['y_df_dataset'])
+                st.dataframe(st.session_state['y_df_dataset'][['From (incl)', 'To (excl)', 'Normalized baseline']])
             
         
         st.write('Do you want to pick another file ? Everything you have done afterwards will be lost.')

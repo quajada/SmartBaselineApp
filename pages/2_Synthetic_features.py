@@ -134,7 +134,7 @@ if st.session_state['synthetic_features_created'] == 2:
             st.dataframe(st.session_state['x_df_synthetic'])
             st.write(str(len(st.session_state['x_df_synthetic'])) + " rows, " + str(len(st.session_state['x_df_synthetic'].columns))+ " columns")
         with col_y:
-            st.dataframe(st.session_state['y_df_synthetic'])
+            st.dataframe(st.session_state['y_df_synthetic'][['From (incl)', 'To (excl)', 'Normalized baseline']])
 
     st.write('')
 

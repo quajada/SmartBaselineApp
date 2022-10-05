@@ -124,7 +124,7 @@ if __name__ == "__main__":
     print(len(x_df.columns))
     print('')
     
-    combi = Combinations(x_df.columns, 2)
+    combi = Combinations(x_df.columns, 1)
     combinations = combi.compute_combinations(x_df)
     # # combinations = [('passengers',)]
     final = Engine(x_df, y_df, combinations, max_variables = 1, nb_folds = 100, test_size = 18)
@@ -132,7 +132,7 @@ if __name__ == "__main__":
     # # IPMVP_results, IPMVP_compliant = final.compute_IPMVP_results()
     # # not_overfitting_results, no_overfit = final.remove_overfitting()
     # # final_results = final.show_top_results(criteria='std_dev', nb_variables=2, nb_top = 30)
-
+           
     final.compute_cross_validation()
     # final.are_combinations_IPMVP_consistently_compliant()
     final.are_combinations_IPMVP_compliant()

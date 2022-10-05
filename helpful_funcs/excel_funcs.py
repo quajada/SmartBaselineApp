@@ -139,10 +139,12 @@ class ReadExcel:
         for bt in base_temps:
             cdd = CDD(bt)
             cdd_df = cdd.compute(weather_features['temp'])
+            print(cdd_df)
             hdd = HDD(bt)
             hdd_df = hdd.compute(weather_features['temp'])
+            print(hdd_df)
             
-            # cdd_df = cdd_df.astype('float16')   
+            # cdd_df = cdd_df.astype('float16')
             # hdd_df = hdd_df.astype('float16')
             # print(hdd_df)
             # print(len(hdd_df))
@@ -152,6 +154,7 @@ class ReadExcel:
             # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')   
             weather_features = weather_features.merge(hdd_df, left_index=True, right_index=True)
             # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')  
+            
             
         for feature in self.features.columns[2:]:
             self.features[feature] = self.features[feature].astype(float)
