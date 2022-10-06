@@ -153,10 +153,6 @@ class ReadExcel:
         for i in range (0, len(df_weather.columns)-2):
             df_weather[df_weather.columns[i]] = df_weather[df_weather.columns[i]].interpolate()
  
-        return df_weather, baseline
-    
-
-    def ok(self, df_weather, baseline):
         
         # Psychrometric data
         df_psych = Psychro(df_weather['temp'],

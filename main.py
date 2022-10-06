@@ -53,8 +53,7 @@ if __name__ == "__main__":
     # path = r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\Input_template - Turkey.xlsx"
     e = ReadExcel(path)
     
-    df_weather, baseline = e.preprocess_data(path)
-    x_df, y_df, baseline = e.ok(df_weather, baseline)
+    x_df, y_df, baseline = e.preprocess_data(path)
 
     clean = CleanColumns(x_df)
     clean.remove_nan()
