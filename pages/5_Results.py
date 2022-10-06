@@ -364,16 +364,8 @@ if st.session_state['results'] == 1:
     st.write('')
     st.write('')
  
-    # st.write('Do you want to change the parameters ? Everything you have done afterwards will be lost.')
-    # if st.button('CHANGE'):
-    #     st.session_state['results'] = 1
-    #     st.session_state['database'] = 0
-    #     st.experimental_rerun()
-            
-    # st.write('')
-    # st.write('')   
-    # st.write('')
-    # st.write('')
+
+
     
 if st.session_state['results'] == 2:
     

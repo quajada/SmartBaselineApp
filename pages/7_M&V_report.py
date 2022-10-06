@@ -26,9 +26,14 @@ from docx.oxml.shared import OxmlElement, qn
 from docx.text.paragraph import Paragraph
 import matplotlib.mathtext as mathtext
 from datetime import datetime
+from helpful_funcs.useful_funcs import *
 
 
 initialization(st)
+
+st.header('M&V Report')
+
+st.write("You can now automatically create the M&V report of a chosen project.")
 
 if 'name_sidebar' in st.session_state:
     st.sidebar.title("Project name : " + st.session_state['name_sidebar'])
@@ -822,7 +827,7 @@ if st.session_state['M&V'] == 1.3:
 if st.session_state['M&V'] == 2:
     st.write('Your report has been created successfully !')
     
-    link = 'https://github.com/BrunoTabet/MVPPublic5/blob/master/M&VReport.docx'
+    # link = 'https://github.com/BrunoTabet/MVPPublic5/blob/master/M&VReport.docx'
     link = 'https://github.com/BrunoTabet/MVPPublic5/raw/master/M%26VReport.docx'
     st.write("You can download the report by clicking [here](%s)." % link)
     
@@ -834,3 +839,10 @@ if st.session_state['M&V'] == 2:
     if st.button('Create another report', key = 675675967567):
         st.session_state['M&V'] = 1
         st.experimental_rerun()
+        
+        
+    col1, col2, col3 = st.columns([1, 5, 1])        
+
+    with col1:
+        if st.button("< Prev"):
+            nav_page('Database')

@@ -42,11 +42,6 @@ if 'name_sidebar' in st.session_state:
 st.header('Update the database')
 
 
-if st.button('Initialize M&V', key = 87655567567):
-    st.session_state['M&V'] = 1
-    st.experimental_rerun()
-
-
 if st.session_state['database'] == 0:
     st.write("You'll be able to update the database once you have picked your final model.")
 
@@ -296,3 +291,5 @@ if st.session_state['database'] == 2:
     with col1:
         if st.button("< Prev"):
             nav_page('Results')
+        if st.button("Next >"):
+            nav_page('M&V report')
