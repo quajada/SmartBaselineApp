@@ -816,7 +816,7 @@ if st.session_state['M&V'] == 1.3:
 
         # Save the file
 
-        doc.save(r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\THISISATEST.xlsx")
+        doc.save(r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\THISISATEST.docx")
         
         st.session_state['M&V'] = 2
         
@@ -829,8 +829,9 @@ if st.session_state['M&V'] == 2:
     
     # link = 'https://github.com/BrunoTabet/MVPPublic5/blob/master/M&VReport.docx'
     link = 'https://github.com/BrunoTabet/MVPPublic5/raw/master/M%VReport.docx'
+    path = r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\THISISATEST.docx"
     # path = 'M&VReport.docx'
-    st.write("You can download the report by clicking [here](%s)." % link)
+    st.write("You can download the report by clicking [here](%s)." % path)
     
     st.write('')
     st.write('')
