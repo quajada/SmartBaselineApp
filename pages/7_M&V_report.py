@@ -823,7 +823,8 @@ if st.session_state['M&V'] == 2:
     st.write('Your report has been created successfully !')
     
     link = 'https://github.com/BrunoTabet/MVPPublic5/blob/master/M&VReport.docx'
-    st.write("You can access the report [here](%s)." % link)
+    link = 'https://github.com/BrunoTabet/MVPPublic5/raw/master/M%26VReport.docx'
+    st.write("You can download the report by clicking [here](%s)." % link)
     
     st.write('')
     st.write('')

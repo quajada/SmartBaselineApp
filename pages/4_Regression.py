@@ -106,8 +106,6 @@ if st.session_state['regression_done'] == 1:
                     combi = Combinations(st.session_state['x_df_regression'].columns, st.session_state['max_features'])
                     combinations = combi.compute_combinations(st.session_state['x_df_regression'])
                     
-                    st.write(st.session_state['y_df_regression'])
-                    
                     final = Engine(st.session_state['x_df_regression'], st.session_state['y_df_regression'], combinations, max_variables = st.session_state['max_features'], nb_folds = st.session_state['nb_folds'], test_size = st.session_state['test_size'])
                     final.compute_cross_validation()
                     # final.are_combinations_IPMVP_consistently_compliant()
@@ -120,7 +118,6 @@ if st.session_state['regression_done'] == 1:
                         st.session_state['y_df_regression'+str(combination)] = st.session_state['y_df_regression'].copy()
                                     
                     st.session_state['results'] = 1
-                    st.session_state['database'] = 1
                     st.session_state['regression_done'] = 2
                     nav_page("Results")
                     # st.experimental_rerun()
@@ -151,13 +148,11 @@ if st.session_state['regression_done'] == 2:
         initialize_selections(st)
         delete_selected(st)
         st.experimental_rerun()
-            
+        
     st.write('')
     st.write('')   
     st.write('')
-    st.write('')    
-
-    
+    st.write('')
     
     col1, col2, col3 = st.columns([1, 5, 1])        
 

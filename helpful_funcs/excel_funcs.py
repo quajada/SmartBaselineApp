@@ -73,37 +73,42 @@ class ReadExcel:
     def table_to_df(self, ws, table: str):
         
         # Get table range
-        cells = ws[ws.tables[table].ref]
+        if table in ws.tables:
+            cells = ws[ws.tables[table].ref]
         
-        # Iterate through table range cells and create a list of lists
-        cells_value = list()
+            # Iterate through table range cells and create a list of lists
+            cells_value = list()
     
-        for cell in cells:
-            row = list()
-            for i in range(0, len(cell)):
-                row.append(cell[i].value)
+            for cell in cells:
+                row = list()
+                for i in range(0, len(cell)):
+                    row.append(cell[i].value)
     
-            cells_value.append(row)
+                cells_value.append(row)
     
-        # Load the list to a dataframe
-        df = pd.DataFrame(cells_value)
-        # Grab the first row for the header
-        df_header = df.iloc[0]
-        # Get the data except the 1st row
-        df = df[1:]
-        # Set the 1st row as header
-        df.columns = df_header
-        # Reset df index to Timestamp
-        df.reset_index(drop=True, inplace=True)
+            # Load the list to a dataframe
+            df = pd.DataFrame(cells_value)
+            # Grab the first row for the header
+            df_header = df.iloc[0]
+            # Get the data except the 1st row
+            df = df[1:]
+            # Set the 1st row as header
+            df.columns = df_header
+            # Reset df index to Timestamp
+            df.reset_index(drop=True, inplace=True)
+            
+            # Reset index to Timestamp
+            #df.set_index('Timestamp', inplace=True)
+            # Converting index to datetime
+            #df.index = pd.to_datetime(df.index)
+            
+            # Remove last row if None
+            if len(df.columns)>2:
+                if not df.iloc[-1, 2]:
+                    df = df.drop(df.index[-1])
         
-        # Reset index to Timestamp
-        #df.set_index('Timestamp', inplace=True)
-        # Converting index to datetime
-        #df.index = pd.to_datetime(df.index)
-        
-        # Remove last row if None
-        if not df.iloc[-1, 2]:
-            df = df.drop(df.index[-1])
+        else:
+            df = pd.DataFrame()
         
         return df
     
@@ -120,8 +125,38 @@ class ReadExcel:
         self.end = baseline['To (excl)'][len(baseline)-1]
         
         df_weather = w.get_data(self.start, self.end)
+        df_weather = df_weather.drop_duplicates()
         
-        # print(df_weather)
+        one_hour = df_weather.index[1] - df_weather.index[0]
+        df2 = {}
+        new_row = []
+        for column in df_weather.columns:
+            df2[column] = None
+            new_row.append(None)
+        
+        
+        for i in range (0, len(df_weather)-1):
+            if df_weather.index[i+1] - df_weather.index[i] != one_hour:
+                index = df_weather.index[i]
+                nb_of_hours = 2
+                for j in range(1, nb_of_hours):
+                    new_row[-2] = df_weather.loc[index]['From (incl)'] + one_hour*j
+                    new_row[-1] = df_weather.loc[index]['To (excl)'] + one_hour*j
+                    df_weather.loc[index + one_hour] = new_row
+                    # print(df_weather.loc[index + one_hour])
+                    # print(index + one_hour)
+        
+        df_weather = df_weather.sort_index()
+        
+        df_weather.replace({pd.NaT: None}, inplace=True)
+        
+        for i in range (0, len(df_weather.columns)-2):
+            df_weather[df_weather.columns[i]] = df_weather[df_weather.columns[i]].interpolate()
+ 
+        return df_weather, baseline
+    
+
+    def ok(self, df_weather, baseline):
         
         # Psychrometric data
         df_psych = Psychro(df_weather['temp'],
@@ -133,35 +168,31 @@ class ReadExcel:
         # Merge weather features
         weather_features = df_weather.merge(df_psych, left_index=True, right_index=True)
         # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')
+
+        
         base_temps = [18, 19, 20, 21, 22, 23, 24]
         
         # print(weather_features)
+        
         for bt in base_temps:
-            cdd = CDD(bt)
+            cdd = CDD(bt) 
             cdd_df = cdd.compute(weather_features['temp'])
-            print(cdd_df)
             hdd = HDD(bt)
             hdd_df = hdd.compute(weather_features['temp'])
-            print(hdd_df)
-            
-            # cdd_df = cdd_df.astype('float16')
-            # hdd_df = hdd_df.astype('float16')
-            # print(hdd_df)
-            # print(len(hdd_df))
-            # print(bt)
             # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')
             weather_features = weather_features.merge(cdd_df, left_index=True, right_index=True)
             # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')   
             weather_features = weather_features.merge(hdd_df, left_index=True, right_index=True)
             # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')  
             
+        
+        if len(self.features.columns) > 2:
+            for feature in self.features.columns[2:]:
+                self.features[feature] = self.features[feature].astype(float)
             
-        for feature in self.features.columns[2:]:
-            self.features[feature] = self.features[feature].astype(float)
-            
-        custom_features_resampled = Aggregator.group_between_dates(self.baseline, 
-                                                                self.features,
-                                                                {col: ['sum', 'mean', 'max', 'min','std'] for col in self.features.columns[2:]})
+            custom_features_resampled = Aggregator.group_between_dates(self.baseline, 
+                                                                       self.features,
+                                                                       {col: ['sum', 'mean', 'max', 'min','std'] for col in self.features.columns[2:]})
         
         float_cols = weather_features.select_dtypes(include=['float64', 'number']).columns
         
@@ -172,7 +203,9 @@ class ReadExcel:
                                                                  Aggregator.weather_agg)
         
         # Merge features
-        features = custom_features_resampled.merge(weather_features_resampled, left_index=True, right_index=True)
+        features = weather_features_resampled
+        if len(self.features.columns) > 2:
+            features = custom_features_resampled.merge(weather_features_resampled, left_index=True, right_index=True)
         
         for column in features.columns:
             # print(column)

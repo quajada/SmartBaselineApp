@@ -76,4 +76,3 @@ class Psychro:
         return pd.DataFrame(data = psych_arr.T, 
                             index = self.index, 
                             columns = self.cols)
-    

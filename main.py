@@ -48,11 +48,14 @@ if __name__ == "__main__":
     
     # print(units2)
 
-    # path = r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\Input_template - Test.xlsx"
-    path = r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\Input_template.xlsx"
+    path = r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\Input_template - Test.xlsx"
+    # path = r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\Input_template.xlsx"
     # path = r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\Input_template - Turkey.xlsx"
     e = ReadExcel(path)
-    x_df, y_df, baseline = e.preprocess_data(path)
+    
+    df_weather, baseline = e.preprocess_data(path)
+    x_df, y_df, baseline = e.ok(df_weather, baseline)
+
     clean = CleanColumns(x_df)
     clean.remove_nan()
     clean.fill_nan()
@@ -80,14 +83,14 @@ if __name__ == "__main__":
     synth.remove_str_beginning('min')
     x_df = synth.x_df
     
-    
     print(x_df.columns)
     print(len(x_df.columns))
     
     filt = FilterData(x_df, y_df['Normalized baseline'])
     print('')
     
-    bad_features_pearson = filt.get_bad_features_pearson(0.5)
+    
+    bad_features_pearson = filt.get_bad_features_pearson(0)
     print('THE FEATURES REMOVED BY PEARSON ARE')
     print(bad_features_pearson)
     print(len(bad_features_pearson))
@@ -95,7 +98,7 @@ if __name__ == "__main__":
     
     print('')
     
-    bad_features_spearman = filt.get_bad_features_spearman(0.5)
+    bad_features_spearman = filt.get_bad_features_spearman(0)
     print('THE FEATURES REMOVED BY SPEARMAN ARE')
     print(bad_features_spearman)
     print(len(bad_features_spearman))
@@ -103,7 +106,7 @@ if __name__ == "__main__":
     
     print('')
     
-    bad_features_info = filt.get_bad_features_info(0.5)
+    bad_features_info = filt.get_bad_features_info(0)
     print('THE FEATURES REMOVED BY MUTUAL INFORMATION ARE')
     print(bad_features_info)
     print(len(bad_features_info))
