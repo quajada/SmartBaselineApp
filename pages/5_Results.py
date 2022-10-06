@@ -257,10 +257,7 @@ if st.session_state['results'] == 1:
                         clean.remove_rows(times)
                         st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)] = clean.x_df, clean.y_df
                         
-                        final2 = Engine(st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)]['Normalized baseline'], [sel_combi], max_variables = st.session_state['max_features'], nb_folds = st.session_state['nb_folds'], test_size = st.session_state['test_size'])
-                        st.write(final2)
-                        st.write(final2.x_df)
-                        st.write(final2.y_df)
+                        final2 = Engine(st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)], [sel_combi], max_variables = st.session_state['max_features'], nb_folds = st.session_state['nb_folds'], test_size = st.session_state['test_size'])
                         final2.compute_cross_validation()
                         final2.are_combinations_IPMVP_compliant()
                         final2.get_df_results()
