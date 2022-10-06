@@ -929,7 +929,7 @@ if st.session_state['M&V'] == 2:
         
     
     
-        download_button(doc, 'M&VReport', 'DOWNLOAD')
+    download_button(doc, 'M&VReport', 'DOWNLOAD')
     
     
     
