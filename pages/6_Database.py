@@ -291,5 +291,7 @@ if st.session_state['database'] == 2:
     with col1:
         if st.button("< Prev"):
             nav_page('Results')
+    
+    with col3:
         if st.button("Next >"):
-            nav_page('M&V report')
+            nav_page('M&V_report')

@@ -834,13 +834,14 @@ if st.session_state['M&V'] == 2:
     st.write('')
     st.write('')
     st.write('')
-    st.write('')
     
     if st.button('Create another report', key = 675675967567):
         st.session_state['M&V'] = 1
         st.experimental_rerun()
         
         
+    st.write('')
+    
     col1, col2, col3 = st.columns([1, 5, 1])        
 
     with col1:
