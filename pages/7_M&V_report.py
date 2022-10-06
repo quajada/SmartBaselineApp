@@ -822,7 +822,7 @@ if st.session_state['M&V'] == 1.3:
 
 
         # Save the file
-        repo = git.Repo("https://github.com/BrunoTabet/MVPPublic5")
+        repo = git.Repo()
         st.write(repo)
         doc.save(repo+'/M&VReport.docx')
         st.stop()
