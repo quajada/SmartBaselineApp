@@ -33,14 +33,14 @@ initialization(st)
 
 st.header('M&V Report')
 
-st.write("You can now automatically create the M&V report of a chosen project.")
-
 if 'name_sidebar' in st.session_state:
     st.sidebar.title("Project name : " + st.session_state['name_sidebar'])
 
 doc = docx.Document('M&VTemplate.docx')
 
 if st.session_state['M&V'] == 1:
+    
+    st.write("You can now automatically create the M&V report of a chosen project.")
     
     file_name = 'database.json'
     if exists(file_name):
