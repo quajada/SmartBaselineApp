@@ -34,6 +34,7 @@ import json
 import pickle
 import uuid
 import re
+import git
 
 initialization(st)
 
@@ -821,9 +822,10 @@ if st.session_state['M&V'] == 1.3:
 
 
         # Save the file
-
-        doc.save('M&VReport.pdf')
-        
+        repo = git.Repo("https://github.com/BrunoTabet/MVPPublic5")
+        st.write(repo)
+        doc.save(repo+'/M&VReport.docx')
+        st.stop()
         st.session_state['M&V'] = 2
         
         
