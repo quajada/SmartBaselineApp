@@ -816,7 +816,7 @@ if st.session_state['M&V'] == 1.3:
 
         # Save the file
 
-        doc.save('https://github.com/BrunoTabet/MVPPublic5/raw/master/M%26VReport.docx')
+        doc.save('M%VReport.docx')
         
         st.session_state['M&V'] = 2
         
@@ -828,7 +828,7 @@ if st.session_state['M&V'] == 2:
     st.write('Your report has been created successfully !')
     
     # link = 'https://github.com/BrunoTabet/MVPPublic5/blob/master/M&VReport.docx'
-    link = 'https://github.com/BrunoTabet/MVPPublic5/raw/master/M%26VReport.docx'
+    link = 'https://github.com/BrunoTabet/MVPPublic5/raw/master/M%VReport.docx'
     # path = 'M&VReport.docx'
     st.write("You can download the report by clicking [here](%s)." % link)
     
