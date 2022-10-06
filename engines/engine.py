@@ -332,7 +332,7 @@ class Engine:
                 new_X_test = new_X_test.values.astype(np.float64)
                 
                 # new_X_train, new_X_test, new_y_train, new_y_test = train_test_split(self.x_df, self.y_df['Normalized baseline'], test_size= self.test_size/len(self.x_df), shuffle=True) 
-                
+
                 new_y_test = new_y_df_test['Normalized baseline'].astype(np.float64).tolist()
                 new_y_train = new_y_df_train['Normalized baseline'].astype(np.float64).tolist()
                 
