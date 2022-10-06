@@ -829,7 +829,8 @@ if st.session_state['M&V'] == 2:
     
     # link = 'https://github.com/BrunoTabet/MVPPublic5/blob/master/M&VReport.docx'
     link = 'https://github.com/BrunoTabet/MVPPublic5/raw/master/M%26VReport.docx'
-    st.write("You can download the report by clicking [here](%s)." % link)
+    path = 'M&VReport.docx'
+    st.write("You can download the report by clicking [here](%s)." % path)
     
     st.write('')
     st.write('')
