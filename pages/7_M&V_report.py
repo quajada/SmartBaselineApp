@@ -839,7 +839,6 @@ if st.session_state['M&V'] == 2:
         st.session_state['M&V'] = 1
         st.experimental_rerun()
         
-        
     st.write('')
     
     col1, col2, col3 = st.columns([1, 5, 1])        
