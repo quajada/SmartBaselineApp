@@ -846,7 +846,7 @@ if st.session_state['M&V'] == 2:
     with open("M&VReport.pdf", "rb") as pdf_file:
         PDFbyte = pdf_file.read()
     
-    st.download_button(label = 'OK', data = PDFbyte, file_name = 'M&VReport.pdf')
+    st.download_button(label = 'OK', data = pdf_file, file_name = 'M&VReport.pdf')
     
     
     
