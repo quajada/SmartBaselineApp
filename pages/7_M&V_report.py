@@ -329,6 +329,8 @@ if st.session_state['M&V'] == 1.3:
         
             if 'Key = Project Details' in row.cells[1].text:
                 row.cells[1].text = projects[0]['Scope']
+                st.write('ITS WORKING')
+                st.stop()
             
             if 'ddress' in row.cells[0].text and projects[0]['Address']:
                 row.cells[1].text = projects[0]['Address']
