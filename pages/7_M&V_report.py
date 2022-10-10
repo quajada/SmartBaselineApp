@@ -823,7 +823,6 @@ if st.session_state['M&V'] == 1.3:
 
         # Save the file
         doc.save('M&VReport')
-        st.stop()
         st.session_state['M&V'] = 2
         
         
