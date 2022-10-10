@@ -834,10 +834,10 @@ if st.session_state['M&V'] == 1.3:
                 # repo.index.commit(COMMIT_MESSAGE)
                 # origin = repo.remote(name='origin')
                 # origin.push()
-                st.stop()
             except:
-                print('Some error occured while pushing the code')    
-        
+                st.write('Some error occured while pushing the code')    
+                st.stop()
+            
         git_push()
         
         st.session_state['M&V'] = 2
