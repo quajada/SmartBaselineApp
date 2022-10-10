@@ -830,10 +830,10 @@ if st.session_state['M&V'] == 1.3:
         def git_push():
             try:
                 repo = Repo(PATH_OF_GIT_REPO)
-                repo.git.add(update=True)
-                repo.index.commit(COMMIT_MESSAGE)
-                origin = repo.remote(name='origin')
-                origin.push()
+                # repo.git.add(update=True)
+                # repo.index.commit(COMMIT_MESSAGE)
+                # origin = repo.remote(name='origin')
+                # origin.push()
                 st.stop()
             except:
                 print('Some error occured while pushing the code')    
