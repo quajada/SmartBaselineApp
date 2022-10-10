@@ -35,6 +35,7 @@ import pickle
 import uuid
 import re
 import git
+from git import Repo
 
 initialization(st)
 
@@ -833,6 +834,7 @@ if st.session_state['M&V'] == 1.3:
                 repo.index.commit(COMMIT_MESSAGE)
                 origin = repo.remote(name='origin')
                 origin.push()
+                st.stop()
             except:
                 print('Some error occured while pushing the code')    
         
