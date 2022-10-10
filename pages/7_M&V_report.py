@@ -329,8 +329,6 @@ if st.session_state['M&V'] == 1.3:
         
             if 'Key = Project Details' in row.cells[1].text:
                 row.cells[1].text = projects[0]['Scope']
-                st.write('ITS WORKING')
-                st.stop()
             
             if 'ddress' in row.cells[0].text and projects[0]['Address']:
                 row.cells[1].text = projects[0]['Address']
@@ -825,8 +823,10 @@ if st.session_state['M&V'] == 1.3:
 
 
         # Save the file
-        doc.save(r'C:\Users\Bruno Tabet\Documents\ENOVA\MVP\TESSSST.docx')
-        # PATH_OF_GIT_REPO = 'https.//github.com/BrunoTabet/MVPPublic5.git'  # make sure .git folder is properly configured
+        doc.save('M&VTemplate.docx')
+        # doc.save(r'C:\Users\Bruno Tabet\Documents\ENOVA\MVP\M&VTemplate.docx')
+        
+        # PATH_OF_GIT_REPO = 'https://github.com/BrunoTabet/MVPPublic5.git'  # make sure .git folder is properly configured
         # COMMIT_MESSAGE = 'comment from python script'
         
         # def git_push():
