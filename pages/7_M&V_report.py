@@ -822,9 +822,7 @@ if st.session_state['M&V'] == 1.3:
 
 
         # Save the file
-        repo = git.Repo()
-        st.write(repo)
-        doc.save(repo+'/M&VReport.docx')
+        doc.save('M&VReport')
         st.stop()
         st.session_state['M&V'] = 2
         
@@ -845,10 +843,10 @@ if st.session_state['M&V'] == 2:
     st.write('')
     st.write('')
     
-    with open("M&VReport.pdf", "rb") as pdf_file:
-        PDFbyte = pdf_file.read()
+    # with open("M&VReport.pdf", "rb") as pdf_file:
+    #     PDFbyte = pdf_file.read()
     
-    st.download_button(label = 'OK', data = pdf_file, file_name = 'M&VReport.pdf')
+    # st.download_button(label = 'OK', data = pdf_file, file_name = 'M&VReport.pdf')
     
     
     
