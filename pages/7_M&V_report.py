@@ -861,13 +861,22 @@ if st.session_state['M&V'] == 1.3:
         
         doc.save('Final_report.pdf')
         
-        with open("Final_report.pdf", "rb") as pdf_file:
-            PDFbyte = pdf_file.read()
+        def show_pdf(file_path):
+            with open(file_path,"rb") as f:
+                base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+            pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="800" height="800" type="application/pdf"></iframe>'
+            st.markdown(pdf_display, unsafe_allow_html=True)
         
-        st.download_button(label="Download PDF Tutorial", 
-                data=PDFbyte,
-                file_name="Final_report.pdf",
-                mime='application/octet-stream')
+        if st.button('PDFFFF'):
+            show_pdf('Final_report.pdf')
+            
+        # with open("Final_report.pdf", "rb") as pdf_file:
+        #     PDFbyte = pdf_file.read()
+        
+        # st.download_button(label="Download PDF Tutorial", 
+        #         data=PDFbyte,
+        #         file_name="Final_report.pdf",
+        #         mime='application/octet-stream')
         
         
         st.session_state['M&V'] = 2
