@@ -128,6 +128,9 @@ if st.session_state['M&V'] == 1.2:
 
 if st.session_state['M&V'] == 1.3:
     
+    st.write(os.path.abspath(os.getcwd()))
+    st.stop()
+    
     with st.spinner('Creating the M&V report'):
         
         projects = st.session_state['selected_projects']
@@ -864,7 +867,6 @@ if st.session_state['M&V'] == 2:
     #     PDFbyte = pdf_file.read()
     
     # st.download_button(label = 'OK', data = pdf_file, file_name = 'M&VReport.pdf')
-    
     
     
     if st.button('Create another report', key = 675675967567):
