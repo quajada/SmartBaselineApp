@@ -869,17 +869,26 @@ if st.session_state['M&V'] == 1.3:
         
         if st.button('PDFFFF'):
             show_pdf('Final_report.pdf')
-            
+        
         # with open("Final_report.pdf", "rb") as pdf_file:
-        #     st.markdown(pdf_file, unsafe_allow_html=True)
+        #     # st.markdown(pdf_file, unsafe_allow_html=True)
         #     PDFbyte = pdf_file.read()
-        #     st.markdown(PDFbyte, unsafe_allow_html =True)
+        #     # st.markdown(PDFbyte, unsafe_allow_html =True)
         
         # st.download_button(label="Download PDF Tutorial", 
         #         data=PDFbyte,
         #         file_name="Final_report.pdf",
         #         mime='application/octet-stream')
         
+        
+        with open("Final_report.pdf", "rb") as file:
+            btn=st.download_button(
+            label="click me to download pdf",
+            data=file,
+            file_name="ok.pdf",
+            mime="application/octet-stream"
+        )
+                
         
         st.session_state['M&V'] = 2
         
