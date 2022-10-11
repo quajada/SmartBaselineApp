@@ -130,7 +130,7 @@ if st.session_state['M&V'] == 1.3:
     
     st.write(os.path.abspath(os.getcwd()))
     st.write(os.path.abspath("Final_Report.docx"))
-    st.stop()
+    # st.stop()
     
     with st.spinner('Creating the M&V report'):
         
@@ -827,10 +827,22 @@ if st.session_state['M&V'] == 1.3:
 
 
         # Save the file
-        doc.save('Final_Report.docx')
+        doc.save('/app/mvppublic5/Final_Report.docx')
         # doc.save(r'C:\Users\Bruno Tabet\Documents\ENOVA\MVP\M&VTemplate.docx')
         
-        PATH_OF_GIT_REPO = 'https://github.com/BrunoTabet/MVPPublic5.git'  # make sure .git folder is properly configured
+        
+        def get_repo_name_from_url(url: str) -> str:
+            last_slash_index = url.rfind("/")
+            last_suffix_index = url.rfind(".git")
+            if last_suffix_index < 0:
+                last_suffix_index = len(url)
+        
+            if last_slash_index < 0 or last_suffix_index <= last_slash_index:
+                raise Exception("Badly formatted url {}".format(url))
+        
+            return url[last_slash_index + 1:last_suffix_index]
+                
+        PATH_OF_GIT_REPO = get_repo_name_from_url('https://github.com/BrunoTabet/MVPPublic5')  # make sure .git folder is properly configured
         COMMIT_MESSAGE = 'comment from python script'
         
         def git_push():
