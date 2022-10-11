@@ -129,6 +129,7 @@ if st.session_state['M&V'] == 1.2:
 if st.session_state['M&V'] == 1.3:
     
     st.write(os.path.abspath(os.getcwd()))
+    st.write(os.path.abspath("Final_Report.docx"))
     st.stop()
     
     with st.spinner('Creating the M&V report'):
