@@ -847,7 +847,7 @@ if st.session_state['M&V'] == 1.3:
         
         def git_push():
             try:
-                repo = Repo(PATH_OF_GIT_REPO)
+                repo = Repo(str(PATH_OF_GIT_REPO))
                 repo.git.add(update=True)
                 repo.index.commit(COMMIT_MESSAGE)
                 origin = repo.remote(name='origin')
@@ -855,8 +855,20 @@ if st.session_state['M&V'] == 1.3:
             except:
                 st.write('Some error occured while pushing the code')
                 # st.stop()
-            
+        
         git_push()
+        
+        
+        doc.save('Final_report.pdf')
+        
+        with open("Final_report.pdf", "rb") as pdf_file:
+            PDFbyte = pdf_file.read()
+        
+        st.download_button(label="Download PDF Tutorial", 
+                data=PDFbyte,
+                file_name="Final_report.pdf",
+                mime='application/octet-stream')
+        
         
         st.session_state['M&V'] = 2
         
