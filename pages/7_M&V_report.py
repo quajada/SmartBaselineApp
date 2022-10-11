@@ -854,7 +854,7 @@ if st.session_state['M&V'] == 1.3:
                 origin.push()
             except:
                 st.write('Some error occured while pushing the code')
-                st.stop()
+                # st.stop()
             
         git_push()
         
