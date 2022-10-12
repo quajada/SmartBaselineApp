@@ -36,6 +36,7 @@ import uuid
 import re
 import git
 from git import Repo
+from io import BytesIO
 
 initialization(st)
 
@@ -127,10 +128,6 @@ if st.session_state['M&V'] == 1.2:
 
 
 if st.session_state['M&V'] == 1.3:
-    
-    st.write(os.path.abspath(os.getcwd()))
-    st.write(os.path.abspath("Final_Report.docx"))
-    # st.stop()
     
     with st.spinner('Creating the M&V report'):
         
@@ -827,15 +824,9 @@ if st.session_state['M&V'] == 1.3:
 
 
         # Save the file
-        doc.save('Final_Report.docx')
+        # doc.save('Final_Report.docx')
         
-        from io import BytesIO
-        
-        f = BytesIO()
-        doc.save(f)
-        st.download_button(label = "Download Report",
-                           data = f,
-                           file_name = "Final_Report.docx")
+
         
         st.session_state['M&V'] = 2
         
@@ -844,21 +835,12 @@ if st.session_state['M&V'] == 1.3:
 if st.session_state['M&V'] == 2:
     st.write('Your report has been created successfully !')
     
-    # link = 'https://github.com/BrunoTabet/MVPPublic5/blob/master/M&VReport.docx'
-    link = 'https://github.com/BrunoTabet/MVPPublic5/raw/master/M%VReport.docx'
-    link = 'https://github.com/BrunoTabet/MVPPublic5/raw/master/Final_Report.docx'
-    path = r"C:\Users\Bruno Tabet\Documents\ENOVA\MVP\THISISATEST.docx"
-    # path = 'M&VReport.docx'
-    st.write("You can download the report by clicking [here](%s)." % link)
     
-    st.write('')
-    st.write('')
-    st.write('')
-    
-    # with open("M&VReport.pdf", "rb") as pdf_file:
-    #     PDFbyte = pdf_file.read()
-    
-    # st.download_button(label = 'OK', data = pdf_file, file_name = 'M&VReport.pdf')
+    f = BytesIO()
+    doc.save(f)
+    st.download_button(label = "Download Report",
+                       data = f,
+                       file_name = "Final_Report.docx")
     
     
     if st.button('Create another report', key = 675675967567):
