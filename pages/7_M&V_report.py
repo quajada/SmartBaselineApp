@@ -833,7 +833,7 @@ if st.session_state['M&V'] == 1.3:
         
         f = BytesIO()
         doc.save(f)
-        st.download_button(label = "My name is jeff",
+        st.download_button(label = "Download Report",
                            data = f,
                            file_name = "Final_Report.docx")
         
@@ -846,197 +846,197 @@ if st.session_state['M&V'] == 1.3:
         # doc.save(r'C:\Users\Bruno Tabet\Documents\ENOVA\MVP\M&VTemplate.docx')
         
         
-        def get_repo_name_from_url(url: str) -> str:
-            last_slash_index = url.rfind("/")
-            last_suffix_index = url.rfind(".git")
-            if last_suffix_index < 0:
-                last_suffix_index = len(url)
+        # def get_repo_name_from_url(url: str) -> str:
+        #     last_slash_index = url.rfind("/")
+        #     last_suffix_index = url.rfind(".git")
+        #     if last_suffix_index < 0:
+        #         last_suffix_index = len(url)
         
-            if last_slash_index < 0 or last_suffix_index <= last_slash_index:
-                raise Exception("Badly formatted url {}".format(url))
+        #     if last_slash_index < 0 or last_suffix_index <= last_slash_index:
+        #         raise Exception("Badly formatted url {}".format(url))
         
-            return url[last_slash_index + 1:last_suffix_index]
+        #     return url[last_slash_index + 1:last_suffix_index]
                 
-        PATH_OF_GIT_REPO = get_repo_name_from_url('https://github.com/BrunoTabet/MVPPublic5')  # make sure .git folder is properly configured
-        COMMIT_MESSAGE = 'comment from python script'
+        # PATH_OF_GIT_REPO = get_repo_name_from_url('https://github.com/BrunoTabet/MVPPublic5')  # make sure .git folder is properly configured
+        # COMMIT_MESSAGE = 'comment from python script'
         
-        def git_push():
-            try:
-                repo = Repo(str(PATH_OF_GIT_REPO))
-                repo.git.add(update=True)
-                repo.index.commit(COMMIT_MESSAGE)
-                origin = repo.remote(name='origin')
-                origin.push()
-            except:
-                st.write('Some error occured while pushing the code')
-                # st.stop()
+        # def git_push():
+        #     try:
+        #         repo = Repo(str(PATH_OF_GIT_REPO))
+        #         repo.git.add(update=True)
+        #         repo.index.commit(COMMIT_MESSAGE)
+        #         origin = repo.remote(name='origin')
+        #         origin.push()
+        #     except:
+        #         st.write('Some error occured while pushing the code')
+        #         # st.stop()
         
-        git_push()
-        
-        
-        doc.save('Final_report.pdf')
-        
-        def show_pdf(file_path):
-            with open(file_path,"rb") as f:
-                base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-            pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="800" height="800" type="application/pdf"></iframe>'
-            st.markdown(pdf_display, unsafe_allow_html=True)
-        
-        if st.button('PDFFFF'):
-            show_pdf('Final_report.pdf')
-        
-        # with open("Final_report.pdf", "rb") as pdf_file:
-        #     # st.markdown(pdf_file, unsafe_allow_html=True)
-        #     PDFbyte = pdf_file.read()
-        #     # st.markdown(PDFbyte, unsafe_allow_html =True)
-        
-        # st.download_button(label="Download PDF Tutorial", 
-        #         data=PDFbyte,
-        #         file_name="Final_report.pdf",
-        #         mime='application/octet-stream')
+        # git_push()
         
         
-        with open("Final_report.pdf", "rb") as file:
-            btn=st.download_button(
-            label="click me to download pdf",
-            data=file,
-            file_name="ok.pdf",
-            mime="application/octet-stream"
-        )
+        # doc.save('Final_report.pdf')
+        
+        # def show_pdf(file_path):
+        #     with open(file_path,"rb") as f:
+        #         base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+        #     pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="800" height="800" type="application/pdf"></iframe>'
+        #     st.markdown(pdf_display, unsafe_allow_html=True)
+        
+        # if st.button('PDFFFF'):
+        #     show_pdf('Final_report.pdf')
+        
+        # # with open("Final_report.pdf", "rb") as pdf_file:
+        # #     # st.markdown(pdf_file, unsafe_allow_html=True)
+        # #     PDFbyte = pdf_file.read()
+        # #     # st.markdown(PDFbyte, unsafe_allow_html =True)
+        
+        # # st.download_button(label="Download PDF Tutorial", 
+        # #         data=PDFbyte,
+        # #         file_name="Final_report.pdf",
+        # #         mime='application/octet-stream')
         
         
-        # from fpdf import FPDF
-        # import base64
+        # with open("Final_report.pdf", "rb") as file:
+        #     btn=st.download_button(
+        #     label="click me to download pdf",
+        #     data=file,
+        #     file_name="ok.pdf",
+        #     mime="application/octet-stream"
+        # )
         
-        # pdf = FPDF() #pdf object
-        # pdf=FPDF(orientation="P", unit="mm", format="A4")
-        # pdf.add_page()
         
-        # pdf.set_font("Times", "B", 18)
-        # pdf.set_xy(10.0, 20)
+        # # from fpdf import FPDF
+        # # import base64
+        
+        # # pdf = FPDF() #pdf object
+        # # pdf=FPDF(orientation="P", unit="mm", format="A4")
+        # # pdf.add_page()
+        
+        # # pdf.set_font("Times", "B", 18)
+        # # pdf.set_xy(10.0, 20)
     
-        # pdf.cell(w = 75.0, h = 5.0, align = "L", txt = "This is my sample text")
+        # # pdf.cell(w = 75.0, h = 5.0, align = "L", txt = "This is my sample text")
         
-        # oflnme = "Final_report.pdf"
-        # b64 = base64.b64encode(pdf.output(dest='S')).decode()
-        # st.download_button("Download Report", data=b64, file_name=oflnme, mime="application/octet-stream", help=f"Download file {oflnme}")
+        # # oflnme = "Final_report.pdf"
+        # # b64 = base64.b64encode(pdf.output(dest='S')).decode()
+        # # st.download_button("Download Report", data=b64, file_name=oflnme, mime="application/octet-stream", help=f"Download file {oflnme}")
         
-        #alternatively, if I replace the above last 2 lines with the following 3 lines of code for a download hyperlink, it works fine.
+        # #alternatively, if I replace the above last 2 lines with the following 3 lines of code for a download hyperlink, it works fine.
         
-        # b64 = base64.b64encode(pdf.output(dest="S"))
-        # html = f'Download file'
-        # st.markdown(html, unsafe_allow_html=True)
+        # # b64 = base64.b64encode(pdf.output(dest="S"))
+        # # html = f'Download file'
+        # # st.markdown(html, unsafe_allow_html=True)
 
 
 
-        import base64
-        import os
-        import json
-        import pickle
-        import uuid
-        import re
+        # import base64
+        # import os
+        # import json
+        # import pickle
+        # import uuid
+        # import re
         
-        import streamlit as st
-        import pandas as pd
-        
-        
-        def download_button(object_to_download, download_filename, button_text, pickle_it=False):
-            """
-            Generates a link to download the given object_to_download.
-        
-            Params:
-            ------
-            object_to_download:  The object to be downloaded.
-            download_filename (str): filename and extension of file. e.g. mydata.csv,
-            some_txt_output.txt download_link_text (str): Text to display for download
-            link.
-            button_text (str): Text to display on download button (e.g. 'click here to download file')
-            pickle_it (bool): If True, pickle file.
-        
-            Returns:
-            -------
-            (str): the anchor tag to download object_to_download
-        
-            Examples:
-            --------
-            download_link(your_df, 'YOUR_DF.csv', 'Click to download data!')
-            download_link(your_str, 'YOUR_STRING.txt', 'Click to download text!')
-        
-            """
-            if pickle_it:
-                try:
-                    object_to_download = pickle.dumps(object_to_download)
-                except pickle.PicklingError as e:
-                    st.write(e)
-                    return None
-        
-            else:
-                if isinstance(object_to_download, bytes):
-                    pass
-        
-                elif isinstance(object_to_download, pd.DataFrame):
-                    object_to_download = object_to_download.to_csv(index=False)
-        
-                # Try JSON encode for everything else
-                else:
-                    object_to_download = json.dumps(object_to_download)
-        
-            try:
-                # some strings <-> bytes conversions necessary here
-                b64 = base64.b64encode(object_to_download.encode()).decode()
-        
-            except AttributeError as e:
-                b64 = base64.b64encode(object_to_download).decode()
-        
-            button_uuid = str(uuid.uuid4()).replace('-', '')
-            button_id = re.sub('\d+', '', button_uuid)
-        
-            custom_css = f""" 
-                <style>
-                    #{button_id} {{
-                        background-color: rgb(255, 255, 255);
-                        color: rgb(38, 39, 48);
-                        padding: 0.25em 0.38em;
-                        position: relative;
-                        text-decoration: none;
-                        border-radius: 4px;
-                        border-width: 1px;
-                        border-style: solid;
-                        border-color: rgb(230, 234, 241);
-                        border-image: initial;
-        
-                    }} 
-                    #{button_id}:hover {{
-                        border-color: rgb(246, 51, 102);
-                        color: rgb(246, 51, 102);
-                    }}
-                    #{button_id}:active {{
-                        box-shadow: none;
-                        background-color: rgb(246, 51, 102);
-                        color: white;
-                        }}
-                </style> """
-        
-            dl_link = custom_css + f'<a download="{download_filename}" id="{button_id}" href="data:file/txt;base64,{b64}">{button_text}</a><br></br>'
-        
-            return dl_link
+        # import streamlit as st
+        # import pandas as pd
         
         
-        from email.message import EmailMessage
+        # def download_button(object_to_download, download_filename, button_text, pickle_it=False):
+        #     """
+        #     Generates a link to download the given object_to_download.
+        
+        #     Params:
+        #     ------
+        #     object_to_download:  The object to be downloaded.
+        #     download_filename (str): filename and extension of file. e.g. mydata.csv,
+        #     some_txt_output.txt download_link_text (str): Text to display for download
+        #     link.
+        #     button_text (str): Text to display on download button (e.g. 'click here to download file')
+        #     pickle_it (bool): If True, pickle file.
+        
+        #     Returns:
+        #     -------
+        #     (str): the anchor tag to download object_to_download
+        
+        #     Examples:
+        #     --------
+        #     download_link(your_df, 'YOUR_DF.csv', 'Click to download data!')
+        #     download_link(your_str, 'YOUR_STRING.txt', 'Click to download text!')
+        
+        #     """
+        #     if pickle_it:
+        #         try:
+        #             object_to_download = pickle.dumps(object_to_download)
+        #         except pickle.PicklingError as e:
+        #             st.write(e)
+        #             return None
+        
+        #     else:
+        #         if isinstance(object_to_download, bytes):
+        #             pass
+        
+        #         elif isinstance(object_to_download, pd.DataFrame):
+        #             object_to_download = object_to_download.to_csv(index=False)
+        
+        #         # Try JSON encode for everything else
+        #         else:
+        #             object_to_download = json.dumps(object_to_download)
+        
+        #     try:
+        #         # some strings <-> bytes conversions necessary here
+        #         b64 = base64.b64encode(object_to_download.encode()).decode()
+        
+        #     except AttributeError as e:
+        #         b64 = base64.b64encode(object_to_download).decode()
+        
+        #     button_uuid = str(uuid.uuid4()).replace('-', '')
+        #     button_id = re.sub('\d+', '', button_uuid)
+        
+        #     custom_css = f""" 
+        #         <style>
+        #             #{button_id} {{
+        #                 background-color: rgb(255, 255, 255);
+        #                 color: rgb(38, 39, 48);
+        #                 padding: 0.25em 0.38em;
+        #                 position: relative;
+        #                 text-decoration: none;
+        #                 border-radius: 4px;
+        #                 border-width: 1px;
+        #                 border-style: solid;
+        #                 border-color: rgb(230, 234, 241);
+        #                 border-image: initial;
+        
+        #             }} 
+        #             #{button_id}:hover {{
+        #                 border-color: rgb(246, 51, 102);
+        #                 color: rgb(246, 51, 102);
+        #             }}
+        #             #{button_id}:active {{
+        #                 box-shadow: none;
+        #                 background-color: rgb(246, 51, 102);
+        #                 color: white;
+        #                 }}
+        #         </style> """
+        
+        #     dl_link = custom_css + f'<a download="{download_filename}" id="{button_id}" href="data:file/txt;base64,{b64}">{button_text}</a><br></br>'
+        
+        #     return dl_link
+        
+        
+        # from email.message import EmailMessage
 
         
-        # Document = document()
-        # paragraph = document.add_paragraph("Test Content")
-        f = BytesIO()
-        doc.save(f)
-        file_list = []
-        file_list.append(["Final_Report.docx", f.get_value(), "application/vnd.openxmlformats-officedocument.wordprocessingml.document"])
-        email = EmailMessage(subject = 'Test', body = 'Hi', to = ['barbourjapon@gmail.com'], attachments = file_list)
-        email.send()
+        # # Document = document()
+        # # paragraph = document.add_paragraph("Test Content")
+        # f = BytesIO()
+        # doc.save(f)
+        # file_list = []
+        # file_list.append(["Final_Report.docx", f.get_value(), "application/vnd.openxmlformats-officedocument.wordprocessingml.document"])
+        # email = EmailMessage(subject = 'Test', body = 'Hi', to = ['barbourjapon@gmail.com'], attachments = file_list)
+        # email.send()
         
         
         
-        # download_button(doc, 'Final_Report.docx', 'DOWNLOAD HERE')
+        # # download_button(doc, 'Final_Report.docx', 'DOWNLOAD HERE')
 
         
         st.session_state['M&V'] = 2
