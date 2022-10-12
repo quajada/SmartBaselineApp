@@ -829,6 +829,8 @@ if st.session_state['M&V'] == 1.3:
         # Save the file
         doc.save('Final_Report.docx')
         
+        from io import BytesIO
+        
         f = BytesIO()
         doc.save(f)
         st.download_button(label = "My name is jeff",
