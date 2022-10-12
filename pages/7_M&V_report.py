@@ -828,6 +828,19 @@ if st.session_state['M&V'] == 1.3:
 
         # Save the file
         doc.save('Final_Report.docx')
+        
+        f = BytesIO()
+        doc.save(f)
+        st.download_button(label = "My name is jeff",
+                           data = f,
+                           file_name = "Final_Report.docx")
+        
+        # st.download_button(label="Download PDF Tutorial", 
+        #         data=PDFbyte,
+        #         file_name="Final_report.pdf",
+        #         mime='application/octet-stream')
+        
+        
         # doc.save(r'C:\Users\Bruno Tabet\Documents\ENOVA\MVP\M&VTemplate.docx')
         
         
@@ -1007,7 +1020,21 @@ if st.session_state['M&V'] == 1.3:
             return dl_link
         
         
-        download_button(doc, 'Final_Report.docx', 'DOWNLOAD HERE')
+        from email.message import EmailMessage
+
+        
+        # Document = document()
+        # paragraph = document.add_paragraph("Test Content")
+        f = BytesIO()
+        doc.save(f)
+        file_list = []
+        file_list.append(["Final_Report.docx", f.get_value(), "application/vnd.openxmlformats-officedocument.wordprocessingml.document"])
+        email = EmailMessage(subject = 'Test', body = 'Hi', to = ['barbourjapon@gmail.com'], attachments = file_list)
+        email.send()
+        
+        
+        
+        # download_button(doc, 'Final_Report.docx', 'DOWNLOAD HERE')
 
         
         st.session_state['M&V'] = 2
