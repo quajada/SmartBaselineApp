@@ -295,7 +295,6 @@ if st.session_state['database'] == 1.5:
         
         rmtree('test')
     
-    
         st.session_state['database'] = 2
         st.session_state['M&V'] = 1
         st.experimental_rerun()
