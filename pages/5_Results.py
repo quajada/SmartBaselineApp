@@ -208,7 +208,7 @@ if st.session_state['results'] == 1:
                     
                     if drapeau == False:
                         new_dict = {}
-                        new_dict['combinations'] = sel_combi
+                        new_dict['combinations'] = [sel_combi]
                         columns_list = ['pval', 'tval']
                         
                         for column in st.session_state['results_df_outliers']:
@@ -217,68 +217,73 @@ if st.session_state['results'] == 1:
                                 round_values = st.session_state['results_dict'][sel_combi][column].copy()
                                 for k in range (len(round_values)):
                                     round_values[k] = round(round_values[k], 4)
-                                new_dict[column] = round_values
+                                new_dict[column] = [round_values]
                             
                             else:
                                 if column not in ['combinations','version', 'nb_data_points', 'nb_outliers_removed']:
-                                    new_dict[column] = st.session_state['results_dict'][sel_combi][column]
+                                    new_dict[column] = [st.session_state['results_dict'][sel_combi][column]]
                             
-                            new_dict['nb_outliers_removed'] = 0
-                            new_dict['version'] = 0
-                            new_dict['nb_data_points'] = len(st.session_state['x_df_results']) - new_dict['nb_outliers_removed']
+                            new_dict['nb_outliers_removed'] = [0]
+                            new_dict['version'] = [0]
+                            new_dict['nb_data_points'] = [len(st.session_state['x_df_results']) - new_dict['nb_outliers_removed'][0]]
                         
                         columns_float = ['r2', 'std_dev', 'r2_cv_test', 'std_dev_cv_test', 'intercept', 'AIC', 'AIC_adj']
                         for column in columns_float:
-                            new_dict[column] = round(new_dict[column], 3)
+                            new_dict[column] = [round(new_dict[column][0], 3)]
                         
-                        st.session_state['results_df_outliers'] = st.session_state['results_df_outliers'].append(new_dict, ignore_index = True)
+
+                        new_df = pd.DataFrame.from_dict(new_dict)
+                        
+                        # st.session_state['results_df_outliers'] = st.session_state['results_df_outliers'].append(new_dict, ignore_index = True)
+                        
+                        st.session_state['results_df_outliers'] = pd.concat([st.session_state['results_df_outliers'], new_df], ignore_index = True)
+                    
                     
                     is_already = False
                     
                     if 'outliers_points'+string not in st.session_state:
                         is_already = True
-                        
-                    elif st.session_state['outliers_points'+string] == {}:
-                        is_already = True
+
+                    for i in range (1, st.session_state['iteration'+str(sel_combi)]):
+                        if st.session_state['outliers_points'+str(sel_combi)+str(i)] == st.session_state['outliers_points'+string]:
+                            is_already = True
                     
-                    else:
-                        for i in range (1, st.session_state['iteration'+str(sel_combi)]):
-                            if st.session_state['outliers_points'+str(sel_combi)+str(i)] == st.session_state['outliers_points'+string]:
-                                is_already = True
-                            
-                    # st.session_state['is_already'+str(sel_combi)] = is_already
                     if is_already:
                         col1.write('**The model you chose is already in the final selection**')
                     
                     else:
-                        times = [time for time in st.session_state['outliers_points'+string]]
-                        
-                        clean = CleanRows(st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)])
-                        clean.remove_rows(times)
-                        st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)] = clean.x_df, clean.y_df
-                        
-                        final2 = Engine(st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)], [sel_combi], max_variables = st.session_state['max_features'], nb_folds = st.session_state['nb_folds'], test_size = st.session_state['test_size'])
-                        final2.compute_cross_validation()
-                        final2.are_combinations_IPMVP_compliant()
-                        final2.get_df_results()
-                        st.session_state['results_df'+str(sel_combi)+str(itera)] = final2.results_df
-                        st.session_state['results_dict'+str(sel_combi)+str(itera)] = final2.results
-                        
-                        new_dict = {}
-                        new_dict['combinations'] = sel_combi
-                        for column in st.session_state['results_df_outliers']:
-                            if column not in ['combinations','version', 'nb_data_points', 'nb_outliers_removed']:
-                                new_dict[column] = st.session_state['results_df'+str(sel_combi)+str(itera)][column]
-                       
-                        new_dict['nb_outliers_removed'] = len(st.session_state['outliers_points'+string])
-                        new_dict['version'] = itera
-                        new_dict['nb_data_points'] = len(st.session_state['selected_points'+string])
-                        
-                        st.session_state['results_df_outliers'] = st.session_state['results_df_outliers'].append(new_dict, ignore_index = True)
-            
-                        st.session_state['iteration' + str(sel_combi)] += 1
-                        st.session_state['selected_pt'+str(sel_combi)+str(itera)] = {}
-                        st.experimental_rerun()                    
+                        if st.session_state['outliers_points'+string] != {}:
+                            times = [time for time in st.session_state['outliers_points'+string]]
+                            
+                            clean = CleanRows(st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)])
+                            clean.remove_rows(times)
+                            st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)] = clean.x_df, clean.y_df
+                            
+                            final2 = Engine(st.session_state['x_df'+str(sel_combi)+str(itera)], st.session_state['y_df'+str(sel_combi)+str(itera)], [sel_combi], max_variables = st.session_state['max_features'], nb_folds = st.session_state['nb_folds'], test_size = st.session_state['test_size'])
+                            final2.compute_cross_validation()
+                            final2.are_combinations_IPMVP_compliant()
+                            final2.get_df_results()
+                            st.session_state['results_df'+str(sel_combi)+str(itera)] = final2.results_df
+                            st.session_state['results_dict'+str(sel_combi)+str(itera)] = final2.results
+                            
+                            new_dict = {}
+                            new_dict['combinations'] = [sel_combi]
+                            for column in st.session_state['results_df_outliers']:
+                                if column not in ['combinations','version', 'nb_data_points', 'nb_outliers_removed']:
+                                    new_dict[column] = [st.session_state['results_df'+str(sel_combi)+str(itera)][column]]
+                           
+                            new_dict['nb_outliers_removed'] = [len(st.session_state['outliers_points'+string])]
+                            new_dict['version'] = [itera]
+                            new_dict['nb_data_points'] = [len(st.session_state['selected_points'+string])]
+                            
+                            new_df = pd.DataFrame.from_dict(new_dict)
+                            
+                            # st.session_state['results_df_outliers'] = st.session_state['results_df_outliers'].append(new_dict, ignore_index = True)
+                            
+                            st.session_state['results_df_outliers'] = pd.concat([st.session_state['results_df_outliers'], new_df], ignore_index = True)
+                            st.session_state['iteration' + str(sel_combi)] += 1
+                            st.session_state['selected_pt'+str(sel_combi)+str(itera)] = {}
+                            st.experimental_rerun()                    
                 
     st.write('')
     st.write('')
@@ -424,4 +429,3 @@ if st.session_state['results'] == 2:
     with col3:
         if st.button("Next >"):
             nav_page("Database")
-                

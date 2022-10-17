@@ -30,6 +30,9 @@ from helpful_funcs.excel_funcs import ReadExcel
 from combinations.combinations import Combinations
 from helpful_funcs.useful_funcs import nav_page
 from helpful_funcs.useful_funcs import initialization
+import git
+from git import Repo
+from git import rmtree
 
 
 initialization(st)
@@ -270,17 +273,36 @@ if st.session_state['database'] == 1.5:
     with st.spinner('Updating the database'):
         # os.remove(file_name)
         
+        repo = Repo.clone_from('https://github.com/BrunoTabet/MVPPublic5.git', "test")
+        repo.remote().fetch()
+        
         with open(st.session_state['file_name'], 'w') as f:
             json.dump(st.session_state['db'], f)
+            
+        with open('test/database.json', 'w') as f:
+            json.dump(st.session_state['db'], f)
+        
+        # repo = Repo("test")
+        repo.git.add(update=True)
+        # repo.git.add(['database.json'])
+        repo.index.commit("latest commit from streamlit")
+        origin = repo.remote(name='origin')
+        origin.push()
+        repo.close()
+        
+        
+        rmtree('test')
+    
     
         st.session_state['database'] = 2
         st.session_state['M&V'] = 1
         st.experimental_rerun()
-    
+        
             
 if st.session_state['database'] == 2:
         
-    st.write('Data updated succesfully')
+    st.write('Data updated succesfully !')
+    
     
     if st.checkbox('Show the new database', value = True):
         st.write(st.session_state['db'])
@@ -295,3 +317,4 @@ if st.session_state['database'] == 2:
     with col3:
         if st.button("Next >"):
             nav_page('M&V_report')
+            

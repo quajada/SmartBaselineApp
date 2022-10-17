@@ -96,12 +96,7 @@ if st.session_state['M&V'] == 1.2:
     
     st.write('For each utility, we will pick the latest version.')
     
-    if st.button('CHANGE'):
-        st.session_state['M&V'] = 1
-        st.experimental_rerun()
-    
-    st.write('')
-    st.write('')
+
     
     
     if len(st.session_state['selected_utilities']) == 0:
@@ -125,6 +120,16 @@ if st.session_state['M&V'] == 1.2:
     
             st.session_state['M&V'] = 1.3
             st.experimental_rerun()
+
+
+    st.write('')
+    st.write('')
+
+    if st.button('CHANGE'):
+        st.session_state['M&V'] = 1
+        st.experimental_rerun()
+    
+
 
 
 if st.session_state['M&V'] == 1.3:
@@ -534,11 +539,12 @@ if st.session_state['M&V'] == 1.3:
                     
         original_table._element.getparent().remove(original_table._element)
         paragraph = find_paragraph(key)
-        remove_key_paragraph(key, paragraph)            
+        remove_key_paragraph(key, paragraph)
         
+    
         
-        
-        
+    
+    
         # Add number of total results to pararaph
     
         total_nb_of_results = sum([projects[i]['number of results'] for i in range (len(projects))])
@@ -549,31 +555,44 @@ if st.session_state['M&V'] == 1.3:
     
     
     
+    
         # Regression equation 
     
-        key = 'Key = The regression equation of the different models are'
+        key = 'Key = The regression equation of the different models'
         paragraph = find_paragraph(key)
+        location = key
+        
+        for i in range (0, len(projects)):
+            paragraph = find_paragraph(location)
+            location = "The regression equation of the model for "+projects[i]['Utility']['name'] + " is:"
+            insert_paragraph_after(paragraph, location)
+
 
         for i in range (len(projects)):
-            equation = projects[i]['equation']
-            utility = projects[i]['Utility']['name']
-            unit = projects[i]['Utility']['unit']
+            equation = projects[i]['equation']        
+            location = "The regression equation of the model for "+projects[i]['Utility']['name'] + " is:"
+            paragraph = find_paragraph(location)
+            insert_paragraph_after(paragraph, equation)
             
-            paragraph = insert_paragraph_after(paragraph, "For "+ utility)
-            equation = equation.replace('normalized baseline', 'baseline (' + unit + ")")
-            equation = equation.replace('= ', '= (')
-            equation += ') * nb_of_hours'
+        delete_paragraph(key)
+    
+            # utility = projects[i]['Utility']['name']
+            # unit = projects[i]['Utility']['unit']
             
-            EXPRESSION = r"{}".format(equation)
+            # paragraph = insert_paragraph_after(paragraph, "For "+ utility)
+            # equation = equation.replace('normalized baseline', 'baseline (' + unit + ")")
+            # equation = equation.replace('= ', '= (')
+            # equation += ') * nb_of_hours'
+            
+            # EXPRESSION = r"{}".format(equation)
         
-            parser=mathtext.MathTextParser( 'bitmap' )
-            offset=parser.to_png("equation.png", EXPRESSION, fontsize=12)
+            # parser=mathtext.MathTextParser( 'bitmap' )
+            # offset=parser.to_png("equation.png", EXPRESSION, fontsize=12)
             
-            r = paragraph.add_run("")
-            inline_obj= r.add_picture("equation.png", width = Inches(7.0), height = Inches(0.2)) #return Inline object
+            # r = paragraph.add_run("")
+            # inline_obj= r.add_picture("equation.png", width = Inches(7.0), height = Inches(0.2)) #return Inline object
             
-        paragraph = find_paragraph(key)
-        remove_key_paragraph(key, paragraph)
+
         
         
 
@@ -822,11 +841,8 @@ if st.session_state['M&V'] == 1.3:
                     for paragraph in cell.paragraphs:
                         paragraph.style = styles['No Spacing']
 
-
         # Save the file
         # doc.save('Final_Report.docx')
-        
-
         
         st.session_state['M&V'] = 2
         
