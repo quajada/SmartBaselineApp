@@ -33,6 +33,7 @@ from helpful_funcs.useful_funcs import initialization
 import git
 from git import Repo
 from git import rmtree
+from os.path import exists
 
 
 initialization(st)
@@ -271,7 +272,9 @@ if st.session_state['database'] == 1.4:
 if st.session_state['database'] == 1.5:
     
     with st.spinner('Updating the database'):
-        # os.remove(file_name)
+        
+        if exists('test'):
+            rmtree('test')
         
         repo = Repo.clone_from('https://github.com/BrunoTabet/Smart-baseline.git', "test")
         repo.remote().fetch()
