@@ -288,11 +288,10 @@ if st.session_state['database'] == 1.5:
         # repo = Repo("test")
         repo.git.add(update=True)
         # repo.git.add(['database.json'])
-        repo.index.commit("latest commit from streamlit")
+        repo.index.commit("we re testing stuff")
         origin = repo.remote(name='origin')
         origin.push()
         repo.close()
-        
         
         rmtree('test')
     
@@ -307,7 +306,7 @@ if st.session_state['database'] == 2:
     st.write('Data updated successfully !')
     
     
-    if st.checkbox('Show the new database', value = True):
+    if st.checkbox('Show the new database', value = False):
         st.write(st.session_state['db'])
     st.write('')
     st.write('')
