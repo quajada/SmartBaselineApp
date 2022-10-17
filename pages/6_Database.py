@@ -273,8 +273,8 @@ if st.session_state['database'] == 1.5:
     
     with st.spinner('Updating the database'):
         
-        if exists('test'):
-            rmtree('test')
+        # if exists('test'):
+        #     rmtree('test')
         
         repo = Repo.clone_from('https://github.com/BrunoTabet/MVPPublic5.git', "test")
         repo.remote().fetch()
