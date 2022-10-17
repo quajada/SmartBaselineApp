@@ -277,6 +277,7 @@ if st.session_state['database'] == 1.5:
             rmtree('test')
         
         repo = Repo.clone_from('https://github.com/BrunoTabet/SmartBaseline.git', "test")
+        repo = Repo.clone_from('git@github.com:BrunoTabet/Smart-Baseline.git', "test")
         repo.remote().fetch()
         
         with open(st.session_state['file_name'], 'w') as f:
@@ -303,7 +304,7 @@ if st.session_state['database'] == 1.5:
 if st.session_state['database'] == 2:
         
     st.write('Data updated successfully !')
-    
+
     
     if st.checkbox('Show the new database', value = False):
         st.write(st.session_state['db'])
