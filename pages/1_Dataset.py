@@ -265,7 +265,7 @@ if st.session_state['outliers_removal'] == 2:
 
 
     st.write('')
-    st.write('The dataset has been updated succesfully !')    
+    st.write('The dataset has been updated successfully !')    
     
     st.write('Do you want to change the dataset ?  Everything you have done afterwards will be lost.')
     
