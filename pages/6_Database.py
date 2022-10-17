@@ -276,7 +276,7 @@ if st.session_state['database'] == 1.5:
         # if exists('test'):
         #     rmtree('test')
         
-        repo = Repo.clone_from('https://github.com/BrunoTabet/MVPPublic5.git', "test")
+        repo = Repo.clone_from('https://github.com/BrunoTabet/SmartBaseline.git', "test")
         repo.remote().fetch()
         
         with open(st.session_state['file_name'], 'w') as f:
@@ -288,7 +288,7 @@ if st.session_state['database'] == 1.5:
         # repo = Repo("test")
         repo.git.add(update=True)
         # repo.git.add(['database.json'])
-        repo.index.commit("we re testing stuff")
+        repo.index.commit("latest commit from Streamlit")
         origin = repo.remote(name='origin')
         origin.push()
         repo.close()
