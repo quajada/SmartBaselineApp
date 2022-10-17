@@ -273,7 +273,7 @@ if st.session_state['database'] == 1.5:
     with st.spinner('Updating the database'):
         # os.remove(file_name)
         
-        repo = Repo.clone_from('https://github.com/BrunoTabet/MVPPublic5.git', "test")
+        repo = Repo.clone_from('https://github.com/BrunoTabet/Smart-baseline.git', "test")
         repo.remote().fetch()
         
         with open(st.session_state['file_name'], 'w') as f:
