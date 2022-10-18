@@ -276,8 +276,8 @@ if st.session_state['database'] == 1.5:
         if exists('test'):
             rmtree('test')
         
-        repo = Repo.clone_from('https://github.com/BrunoTabet/SmartBaseline.git', "test")
-        repo = Repo.clone_from('git@github.com:BrunoTabet/Smart-Baseline.git', "test")
+        repo = Repo.clone_from('https://BrunoTabet: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@github.com/BrunoTabet/SmartBaseline.git', "test")
+        # repo = Repo.clone_from('git@github.com:BrunoTabet/Smart-Baseline.git', "test")
         repo.remote().fetch()
         
         with open(st.session_state['file_name'], 'w') as f:
