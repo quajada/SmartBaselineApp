@@ -26,18 +26,16 @@ class WeatherStation:
     
     def get_data(self, start, end) -> pd.DataFrame:
         
-        print(start, end)
         # Setup api
         # end = datetime.datetime.now()
         end += datetime.timedelta(hours = 1)
         start += datetime.timedelta(hours =-1) 
-        print(end)
+
         weather_api = Hourly(self.station, start, end)
         
         # Get data for period
         weather_df = weather_api.fetch()
         
-        print(weather_df)
         # Standardize
         weather_df['From (incl)'] = weather_df.index
         weather_df['To (excl)'] = weather_df['From (incl)'] + pd.DateOffset(hours=1)

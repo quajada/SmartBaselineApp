@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jul 19 10:37:11 2022
+Created on Wed Oct 19 16:14:17 2022
 
 @author: Bruno Tabet
 """
@@ -26,6 +26,3 @@ if __name__ == "__main__":
     x_df, y_df = cleandata(x_df, y_df)
     
     print(y_df[0])
-    
-    
-

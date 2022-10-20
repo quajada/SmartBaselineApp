@@ -180,12 +180,23 @@ class ReadExcel:
             # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')   
             weather_features = weather_features.merge(hdd_df, left_index=True, right_index=True)
             # weather_features[weather_features.select_dtypes('float64').columns] = weather_features.select_dtypes('float64').astype('float16')  
-            
+        
         
         if len(self.features.columns) > 2:
+            
+            columns = self.features.columns[2:]
+            bad_columns = []
+    
+            for column in columns:
+                if self.features[column].nunique() <= 1:
+                    bad_columns.append(column)
+                    
+            self.features.drop(bad_columns, axis = 1, inplace = True)
+            
             for feature in self.features.columns[2:]:
                 self.features[feature] = self.features[feature].astype(float)
-            
+        
+        if len(self.features.columns) > 2:    
             custom_features_resampled = Aggregator.group_between_dates(self.baseline, 
                                                                        self.features,
                                                                        {col: ['sum', 'mean', 'max', 'min','std'] for col in self.features.columns[2:]})
@@ -198,10 +209,13 @@ class ReadExcel:
                                                                  weather_features, 
                                                                  Aggregator.weather_agg)
         
+
         # Merge features
+        
         features = weather_features_resampled
         if len(self.features.columns) > 2:
             features = custom_features_resampled.merge(weather_features_resampled, left_index=True, right_index=True)
+        
         
         for column in features.columns:
             # print(column)
@@ -211,7 +225,9 @@ class ReadExcel:
             df2 = pd.DataFrame(0, columns = [column], index = bad_indexes)
             df3 = pd.concat([df1, df2])
             features[column] = df3[column]
-            
+        
+
+        
         features = features.astype(np.float64)
 
         x_df = features
