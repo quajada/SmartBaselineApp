@@ -278,28 +278,28 @@ if st.session_state['database'] == 1.5:
         
         # repo = Repo.clone_from('https://BrunoTabet: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@github.com/BrunoTabet/SmartBaseline.git', "test")
         # repo = Repo.clone_from('https://@github.com/BrunoTabet/SmartBaseline.git', "test")
-        repo = Repo.clone_from('git@github.com:BrunoTabet/SmartBaseline.git', "test")
-        repo.remote().fetch()
+        # repo = Repo.clone_from('git@github.com:BrunoTabet/SmartBaseline.git', "test")
+        # repo.remote().fetch()
         
-        with open(st.session_state['file_name'], 'w') as f:
-            json.dump(st.session_state['db'], f)
+        # with open(st.session_state['file_name'], 'w') as f:
+        #     json.dump(st.session_state['db'], f)
             
-        with open('test/database.json', 'w') as f:
-            json.dump(st.session_state['db'], f)
+        # with open('test/database.json', 'w') as f:
+        #     json.dump(st.session_state['db'], f)
         
-        # repo = Repo("test")
-        repo.git.add(update=True)
-        # repo.git.add(['database.json'])
-        repo.index.commit("latest commit from Streamlit")
-        origin = repo.remote(name='origin')
-        origin.push()
-        repo.close()
+        # # repo = Repo("test")
+        # repo.git.add(update=True)
+        # # repo.git.add(['database.json'])
+        # repo.index.commit("latest commit from Streamlit")
+        # origin = repo.remote(name='origin')
+        # origin.push()
+        # repo.close()
         
-        rmtree('test')
+        # rmtree('test')
     
-        st.session_state['database'] = 2
-        st.session_state['M&V'] = 1
-        st.experimental_rerun()
+        # st.session_state['database'] = 2
+        # st.session_state['M&V'] = 1
+        # st.experimental_rerun()
         
             
 if st.session_state['database'] == 2:
