@@ -277,7 +277,7 @@ if st.session_state['database'] == 1.5:
             rmtree('test')
         
         # repo = Repo.clone_from('https://BrunoTabet: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@github.com/BrunoTabet/SmartBaseline.git', "test")
-        repo = Repo.clone_from('https://BrunoTabet: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@github.com/BrunoTabet/SmartBaseline.git', "test")
+        repo = Repo.clone_from('https://BrunoTabet:02Mars2001Tokyo@github.com/BrunoTabet/SmartBaseline.git', "test")
         # repo = Repo.clone_from('git@github.com:BrunoTabet/Smart-Baseline.git', "test")
         repo.remote().fetch()
         
