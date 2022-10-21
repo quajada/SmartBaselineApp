@@ -276,7 +276,7 @@ if st.session_state['database'] == 1.5:
         if exists('test'):
             rmtree('test')
         
-        repo = Repo.clone_from('https://BrunoTabet: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@github.com/BrunoTabet/SmartBaseline.git', "test")
+        # repo = Repo.clone_from('https://BrunoTabet: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@github.com/BrunoTabet/SmartBaseline.git', "test")
         repo = Repo.clone_from('https://github.com/BrunoTabet/SmartBaselineApp.git', "test")
         # repo = Repo.clone_from('git@github.com:BrunoTabet/SmartBaselineApp.git', "test")
         repo.remote().fetch()
@@ -287,9 +287,9 @@ if st.session_state['database'] == 1.5:
         with open('test/database.json', 'w') as f:
             json.dump(st.session_state['db'], f)
         
-        # repo = Repo("test")
+        repo = Repo("test")
         repo.git.add(update=True)
-        # repo.git.add(['database.json'])
+        repo.git.add(['database.json'])
         repo.index.commit("latest commit from Streamlit")
         origin = repo.remote(name='origin')
         origin.push()
@@ -306,7 +306,6 @@ if st.session_state['database'] == 2:
         
     st.write('Data updated successfully !')
 
-    
     if st.checkbox('Show the new database', value = False):
         st.write(st.session_state['db'])
     st.write('')
