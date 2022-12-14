@@ -308,10 +308,6 @@ if st.session_state['database'] == 1.5:
         
         # rmtree('test')
         
-        st.write('you have to copy')
-        
-        st.stop()
-    
         st.session_state['database'] = 2
         st.session_state['M&V'] = 1
         st.experimental_rerun()
@@ -325,7 +321,7 @@ if st.session_state['database'] == 2:
         st.write(st.session_state['db'])
     st.write('')
     st.write('')
-    col1, col2, col3 = st.columns([1, 5, 1])        
+    col1, col2, col3 = st.columns([1, 5, 1])
 
     with col1:
         if st.button("< Prev"):
