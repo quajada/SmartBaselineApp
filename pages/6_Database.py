@@ -270,14 +270,14 @@ if st.session_state['database'] == 1.4:
     else:
         st.session_state['db'][st.session_state['project_name']] = {}
         st.session_state['db'][st.session_state['project_name']][st.session_state['scope_name']] = [st.session_state['new_database']]
-        st.session_state['database'] = 1.5
+        st.session_state['database'] = 2
         st.experimental_rerun()
     
     
 
-if st.session_state['database'] == 1.5:
+# if st.session_state['database'] == 1.5:
     
-    with st.spinner('Updating the database'):
+#     with st.spinner('Updating the database'):
         
         # if exists('test'):
         #     rmtree('test')
@@ -308,17 +308,25 @@ if st.session_state['database'] == 1.5:
         
         # rmtree('test')
         
-        st.session_state['database'] = 2
-        st.session_state['M&V'] = 1
-        st.experimental_rerun()
+        # st.session_state['database'] = 2
+        # st.session_state['M&V'] = 1
+        # st.experimental_rerun()
         
             
 if st.session_state['database'] == 2:
-        
-    st.write('Data updated successfully !')
+    
+    link = "4) Open the following [link] (https://github.com/BrunoTabet/SmartBaselineApp)"
+    
+    st.write('This is the new database. Please follow the 7 following steps:')
+    st.write("1) If you haven't already, you need to create a Gihub account.")
+    st.write("2) You need to ask someone who has access to give you permission to edit the file.")
+    st.write("3) Please copy the database below by clicking on the blue button next to it.")
+    st.markdown(link, unsafe_allow_html = True)
+    st.write("5) Click on the pen on the write and choose the option : Edit.")
+    st.write("6) Delete all the content of the database and remove it with the copied database.")
+    st.write("7) On the bottom of the page, click on Commit Change.")    
 
-    if st.checkbox('Show the new database', value = False):
-        st.write(st.session_state['db'])
+    st.write(st.session_state['db'])
     st.write('')
     st.write('')
     col1, col2, col3 = st.columns([1, 5, 1])
