@@ -1,0 +1,11 @@
+{
+    "share_point":
+        {
+            "user": "{btabet@enova-me.com}",
+            "password": "{02Mars2001}",
+            "url": "https://{beesme-my}.sharepoint.com",
+            "site": "https://{beesme-my}.sharepoint.com/sites/{Name}/",
+            "doc_library": "Shared Documents/{bruno_tabet_enova-me_com}"
+        }
+
+}

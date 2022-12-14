@@ -62,21 +62,27 @@ if st.session_state['database'] == 1:
 
 if st.session_state['database'] == 1.1:
         
-    file_name = 'database.json'       
+    # file_name = 'database.json'       
     
-    if not exists(file_name):
-        f = open(file_name, 'w')
+    # if not exists(file_name):
+    #     f = open(file_name, 'w')
 
-    f = open(file_name)
-    e = st.session_state['excel']
-    if os.stat(file_name).st_size == 0:
-        db = {}
-    else:
+    # f = open(file_name)
+    # e = st.session_state['excel']
+    # if os.stat(file_name).st_size == 0:
+    #     db = {}
+    # else:
+    #     db = json.load(f)
+        
+    # with open('https://beesme-my.sharepoint.com/personal/bruno_tabet_enova-me_com/_layouts/15/onedrive.aspx?FolderCTID=0x012000E08D632EED40F044A8AD6592D121D142&id=%2Fpersonal%2Fbruno%5Ftabet%5Fenova%2Dme%5Fcom%2FDocuments%2FDocuments%2Fdatabase%2Ejson&parent=%2Fpersonal%2Fbruno%5Ftabet%5Fenova%2Dme%5Fcom%2FDocuments%2FDocuments', 'w') as f:
+    
+    with open('database.json', 'w') as f:
         db = json.load(f)
     
+    e = st.session_state['excel']
     new_database = e.data.copy()
     st.session_state['new_database'] = new_database
-    st.session_state['file_name'] = file_name
+    # st.session_state['file_name'] = file_name
     st.session_state['project_name'] = new_database['Project name']
     st.session_state['scope_name'] = new_database['Scope']
     st.session_state['db'] = db
@@ -273,29 +279,38 @@ if st.session_state['database'] == 1.5:
     
     with st.spinner('Updating the database'):
         
-        if exists('test'):
-            rmtree('test')
+        # if exists('test'):
+        #     rmtree('test')
         
         # repo = Repo.clone_from('https://BrunoTabet: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@github.com/BrunoTabet/SmartBaseline.git', "test")
         # repo = Repo.clone_from('https://github.com/BrunoTabet/SmartBaselineApp.git', "test")
-        repo = Repo.clone_from('git@github.com:BrunoTabet/SmartBaselineApp.git', "test")
-        repo.remote().fetch()
+        # repo = Repo.clone_from('git@github.com:BrunoTabet/SmartBaselineApp.git', "test")
+        # repo.remote().fetch()
         
-        with open(st.session_state['file_name'], 'w') as f:
-            json.dump(st.session_state['db'], f)
+        # with open(st.session_state['file_name'], 'w') as f:
+        #     json.dump(st.session_state['db'], f)
             
-        with open('test/database.json', 'w') as f:
-            json.dump(st.session_state['db'], f)
+        # # with open('test/database.json', 'w') as f:
+        # #     json.dump(st.session_state['db'], f)
         
-        repo = Repo("test")
-        repo.git.add(update=True)
-        repo.git.add(['database.json'])
-        repo.index.commit("latest commit from Streamlit")
-        origin = repo.remote(name='origin')
-        origin.push()
-        repo.close()
         
-        rmtree('test')
+        # with open('https://beesme-my.sharepoint.com/personal/bruno_tabet_enova-me_com/_layouts/15/onedrive.aspx?FolderCTID=0x012000E08D632EED40F044A8AD6592D121D142&id=%2Fpersonal%2Fbruno%5Ftabet%5Fenova%2Dme%5Fcom%2FDocuments%2FDocuments%2Fdatabase%2Ejson&parent=%2Fpersonal%2Fbruno%5Ftabet%5Fenova%2Dme%5Fcom%2FDocuments%2FDocuments', 'w') as f:
+        #     json.dump(st.session_state['db'], f)
+        
+        
+        # repo = Repo("test")
+        # repo.git.add(update=True)
+        # repo.git.add(['database.json'])
+        # repo.index.commit("latest commit from Streamlit")
+        # origin = repo.remote(name='origin')
+        # origin.push()
+        # repo.close()
+        
+        # rmtree('test')
+        
+        st.write('you have to copy')
+        
+        st.stop()
     
         st.session_state['database'] = 2
         st.session_state['M&V'] = 1
