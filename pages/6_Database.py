@@ -320,7 +320,7 @@ if st.session_state['database'] == 2:
     st.write('This is the new database. Please follow the 7 following steps:')
     st.write("1) If you haven't already, you need to create a Gihub account.")
     st.write("2) You need to ask someone who has access to give you permission to edit files on the Github.")
-    st.write("3) Copy the database below by clicking on the blue button next to the very first brace on the very first line of the database. You will see a black tick on the blue box if you have successfully copied th database.")
+    st.write("3) Copy the database below by clicking on the blue button next to the very first brace on the very first line of the database. If you successfully copied the database, you will see a black tick on the blue box.")
     st.markdown(link, unsafe_allow_html = True)
     st.write("5) Click on the pen on the right of the page you have just opened, and choose the option : Edit.")
     st.write("6) Delete all the content of the database and add the new copied database.")
