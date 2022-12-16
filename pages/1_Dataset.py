@@ -113,8 +113,8 @@ if st.session_state['file_uploaded'] == 2:
         x_df, y_df, baseline = st.session_state['excel'].preprocess_data(st.session_state['file'])
         
         clean = CleanColumns(x_df)
-        clean.remove_nan()
         clean.fill_nan()
+        clean.remove_nan()
         clean.remove_duplicates()
         x_df = clean.x_df
         
@@ -127,7 +127,6 @@ if st.session_state['file_uploaded'] == 2:
         st.session_state['y_df_dataset']['Timedelta'] = y_df['Timedelta']
         
         rename(st.session_state['x_df_dataset'])
-        
         
         st.session_state['synthetic_features_created'] = 1
         st.session_state['data_uploaded'] = 2
@@ -164,7 +163,6 @@ if st.session_state['file_uploaded'] == 2:
             initialize_selected_outliers_points(st)
             delete_selected(st)
             st.experimental_rerun()    
-        
         
 st.subheader('Dataset selection')
 

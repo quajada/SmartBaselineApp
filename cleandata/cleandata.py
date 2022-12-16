@@ -104,8 +104,7 @@ class CleanColumns(CleanDataFrame):
         return self.x_df
 
     def remove_nan(self):
-        # self.x_df = self.x_df.dropna(axis = 1, how = 'all')
-        self.x_df.dropna(thresh=self.x_df.shape[0]*0.6,how='all',axis=1)
+        self.x_df = self.x_df.dropna(axis = 1, how = 'any')
         return self.x_df
         
     def fill_nan(self):
