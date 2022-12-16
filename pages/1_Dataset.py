@@ -118,13 +118,6 @@ if st.session_state['file_uploaded'] == 2:
         clean.remove_duplicates()
         x_df = clean.x_df
         
-        clean = CleanColumns(y_df)
-        # clean.remove_bad_columns()
-        clean.remove_nan()
-        clean.fill_nan()
-        clean.remove_duplicates()
-        y_df = clean.x_df
-        
         st.session_state['sheet'] = st.session_state['excel'].wb['Project']
         st.session_state['x_df_dataset'] = x_df
         st.session_state['y_df_with_dates'] = y_df[['From (incl)', 'To (excl)', 'Normalized baseline']]
@@ -134,8 +127,6 @@ if st.session_state['file_uploaded'] == 2:
         st.session_state['y_df_dataset']['Timedelta'] = y_df['Timedelta']
         
         rename(st.session_state['x_df_dataset'])
-        
-        
         
         
         st.session_state['synthetic_features_created'] = 1
