@@ -261,10 +261,10 @@ if st.session_state['database'] == 1.4:
                     
             else:
                 st.session_state['db'][st.session_state['project_name']][st.session_state['scope_name']].append(st.session_state['new_database'])
-                st.session_state['database'] = 1.5
+                st.session_state['database'] = 2
                 st.experimental_rerun()
             
-        st.session_state['database'] = 1.5
+        st.session_state['database'] = 2
         st.experimental_rerun()
         
     else:
