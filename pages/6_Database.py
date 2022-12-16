@@ -315,20 +315,18 @@ if st.session_state['database'] == 1.4:
             
 if st.session_state['database'] == 2:
     
-    link = "4) Open the following [link] (https://github.com/BrunoTabet/SmartBaselineApp)"
+    link = "4) Open the following https://github.com/BrunoTabet/SmartBaselineApp/blob/master/database.json ."
     
     st.write('This is the new database. Please follow the 7 following steps:')
     st.write("1) If you haven't already, you need to create a Gihub account.")
-    st.write("2) You need to ask someone who has access to give you permission to edit the file.")
-    st.write("3) Please copy the database below by clicking on the blue button next to it.")
+    st.write("2) You need to ask someone who has access to give you permission to edit files on the Github.")
+    st.write("3) Copy the database below by clicking on the blue button next to the very first brace on the very first line of the database. You will see a black tick on the blue box if you have successfully copied th database.")
     st.markdown(link, unsafe_allow_html = True)
-    st.write("5) Click on the pen on the write and choose the option : Edit.")
-    st.write("6) Delete all the content of the database and remove it with the copied database.")
-    st.write("7) On the bottom of the page, click on Commit Change.")    
-
-    st.write(st.session_state['db'])
-    st.write('')
-    st.write('')
+    st.write("5) Click on the pen on the right of the page you have just opened, and choose the option : Edit.")
+    st.write("6) Delete all the content of the database and add the new copied database.")
+    st.write('7) On the bottom of the page, select "Commit directly to the master branch" if it is not already selected, and then click on the green button: "Commit changes".')
+    st.write("")
+    
     col1, col2, col3 = st.columns([1, 5, 1])
 
     with col1:
@@ -338,3 +336,9 @@ if st.session_state['database'] == 2:
     with col3:
         if st.button("Next >"):
             nav_page('M&V_report')
+    
+    st.write("This is the database that you need to copy and paste :")
+
+    st.write(st.session_state['db'])
+    st.write('')
+    st.write('')
