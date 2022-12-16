@@ -123,7 +123,7 @@ if st.session_state['file_uploaded'] == 2:
         clean.remove_nan()
         clean.fill_nan()
         clean.remove_duplicates()
-        y_df = clean.y_df
+        y_df = clean.x_df
         
         st.session_state['sheet'] = st.session_state['excel'].wb['Project']
         st.session_state['x_df_dataset'] = x_df
