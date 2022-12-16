@@ -76,8 +76,12 @@ if st.session_state['database'] == 1.1:
         
     # with open('https://beesme-my.sharepoint.com/personal/bruno_tabet_enova-me_com/_layouts/15/onedrive.aspx?FolderCTID=0x012000E08D632EED40F044A8AD6592D121D142&id=%2Fpersonal%2Fbruno%5Ftabet%5Fenova%2Dme%5Fcom%2FDocuments%2FDocuments%2Fdatabase%2Ejson&parent=%2Fpersonal%2Fbruno%5Ftabet%5Fenova%2Dme%5Fcom%2FDocuments%2FDocuments', 'w') as f:
     
-    f = open('database.json')
-    db = json.load(f)
+    if os.stat('database.json').st_size == 0:
+        db = {}    
+    
+    else:
+        f = open('database.json')
+        db = json.load(f)
     
     e = st.session_state['excel']
     new_database = e.data.copy()
